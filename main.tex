@@ -136,31 +136,32 @@ Our navigation stack is based on ROS2, but we do not use the navigation2 library
 Our software is highly modularized, so some of our members use our stacks in other autonomous mobility competitions.
 
 \subsection{Planner components}
-We created hermite planner as the path planning module for Wam-V.
+We created hermite planner as the path planning module for WAM-V.
 Once the goal direction information from the behavior layer is obtained, the path shape is created using the Hermite curve in combination with the current position.
 The Hermite curve is a kind of parametric curve with continuous curvature, and its shape is determined by specifying a vector between two endpoints.
 The reason for using this method is that Catmull-Rom Spline, etc. can be created by connecting Hermite curves, so the creation function can be used repeatedly, and since Wam-V itself can turn on the spot, it can follow a steep path even if it is created.
 \indent The components of hermite planner are explained sequentially.
-The local waypoint server calculates the distance between the destination and obstacles in the Fresnel coordinate system.
+The local waypoint server calculates the distance between the destination and obstacles in the Fresnet coordinate system.
 If a contact is detected on the route, a route is created to reach the destination with a slight shift in the X and Y directions in the world coordinate system.
-For contact judgment in the Fresnel coordinate system, the nearest neighbor points between the Hermite curve and the 2D LaserScan obtained from the obstacle are calculated using the Newton method.
+For contact judgment in the Fresnet coordinate system, the nearest neighbor points between the Hermite curve and the 2D LaserScan obtained from the obstacle are calculated using the Newton method.
 From among them, a collision is judged to have occurred if Satisfying Equation 1 and 2, 3.
 \begin{eqnarray}
   0<t<1\\
   f(t)<width+margin\\
   f(t)=at^3+bt^2+c^2+d
   \end{eqnarray}
-When the destination is determined, the calculation of the velocity agreement is performed using several velocity modules.
-\indent The first is stop planner, which creates a speed commitment to stop at the destination end of the route.
+When the Hermite curve is determined, the calculation of the velocity constraint is performed using several velocity modules.
+The first is stop planner, which creates a speed commitment to stop at the destination end of the route.
 This speed module creates a speed commitment to slow down at a constant acceleration before heading to the destination.
-Second, there is an obstacle planner to perform a stop before an obstacle.
+Second, there is an obstacle planner to perform a stop before obstacle objects.
 This constraint to stop before the obstacle uses the same method as stop planner.
 The third is a curve planner to prevent the angular velocity from exceeding a certain value.
 It creates a velocity constraint so that the angular velocity between points on the created Hermite curve does not become too large.
-Each of these three creates velocity constraints independently, integrates the information from each of them, performs graph searches, and adjusts the velocity constraints.
-Create a velocity plan on the route by deleting edges with too much acceleration as edges with increasing or decreasing velocity between them as nodes on each curve.
+Each of these three creates velocity constraints independently, integrates the information from each of them.
+And, the graph adjusts the velocity constraints, and searches the velocity.
+Creating a velocity plan on the route by deleting edges with too much acceleration as edges with increasing or decreasing velocity between them as nodes on each curve.
 Then, based on the created route and the ship's own self-position, the pure pursuit planner is used to follow the route.
-A contact point between the circle centered on the ship's self-position and the path is created, and the angular velocity and speed up to that contact point is calculated.
+A contact point between the circle centered on the WAM-V's self-position and the path is created, and the angular velocity and speed up to that contact point is calculated.
 In addition, a straight line is created on the extension of the endpoint to approximate the endpoint so that the endpoint does not run out of control.
 Fig. hoge is shown as an example of route creation by the above path planning module.
 
