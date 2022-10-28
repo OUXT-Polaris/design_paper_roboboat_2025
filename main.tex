@@ -326,7 +326,29 @@ but also CAD models, and circuit data. \cite{documentation_hardware}
 
 \subsection{Software System Architecture}
 Our navigation stack is based on ROS2, but we do not use the navigation2 library. We develop our original software.
-Our software is highly modularized, so some of our members use our stacks in other autonomous mobility competitions.
+Our software is highly modularized, so some of our team members use our stacks in other autonomous mobility competitions. 
+(Fig.\ref{fig:whill},Fig. \ref{fig:whill_rviz})
+
+\begin{figure}[H]
+    \begin{center}
+        \scalebox{0.12}{
+            \includegraphics{figure/whill.png}
+        }
+    \end{center}
+    \caption{Autonomous mobility with our navigation stack}
+    \label{fig:whill}
+\end{figure}
+
+\begin{figure}[H]
+    \begin{center}
+        \scalebox{0.12}{
+            \includegraphics{figure/whill_rviz.png}
+        }
+    \end{center}
+    \caption{Autonomous mobility with our navigation stack (rviz)}
+    \label{fig:whill}
+\end{figure}
+
 All of our software is managed by ansible and can be deployed on real machines without the need for human intervention.
 It is open source, including the setup tools \cite{ouxt_automation} and it's documentation \cite{documentation_software},
 so anyone in the world can try out the OUXT-Polaris navigation stack.
