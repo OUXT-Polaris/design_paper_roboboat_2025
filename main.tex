@@ -76,7 +76,11 @@ and the target velocity that WAM-V can trace the way is calculated.
 Finally, in the servo and thruster controllers,
 the servo motor direction and the thruster revolution to achieve the target velocity are calculated based on the vessel motion model.
 
+<<<<<<< HEAD
 \begin{figure}[h]
+=======
+\begin{figure}[htbp]
+>>>>>>> 9ba2b22f475bd82eda5642e0553ff593c926a940
     \begin{center}
         \scalebox{0.8}{
             \includegraphics{figure/proposed_sw_system.jpg}
@@ -87,6 +91,38 @@ the servo motor direction and the thruster revolution to achieve the target velo
 \end{figure}
 
 \section{Hardware Developments}
+
+\subsection{Redesign of Azimuth Thruster}
+
+We considered the following three issues when designing the propulsion mechanism.
+
+First, we considered it important for the boat to be able to generate lateral propulsive force to complete the docking task.
+When propulsion units are mounted on the two aft sections of the boat, each propulsion unit must have a degree of freedom in the yaw axis to generate thrust in any direction in the horizontal plane.
+This propulsion system is generally called an azimuth thruster.
+
+Next, the electric outboard motors that are commonly available have a circular cross-section for the mounting shaft, so it is necessary to find a way to fix the shaft tightly.
+
+In addition, the propeller must avoid contact with the seafloor when the vessel needs to navigate in shallow water, such as when launching the boat on the course. Since it is dangerous for a person to enter shallow water and lift the thruster with a tool, a mechanism that can easily raise and lower the thruster was necessary.
+
+To meet these requirements, we designed the mechanism shown in Fig. \ref{fig:azimuth_design}.
+The three functions of gripping, rotating, and elevating are integrated into a single unit.
+
+The gripping function was realized using a PLA plastic collet manufactured by a 3D printer.
+The collet is pushed axially by a screw into an aluminum hollow shaft with a wedge-shaped cross section to enable strong shaft gripping.
+
+The azimuth mechanism is realized by transmitting the rotational force from the servo motor (XM540-W270, Dynamixel) to the hollow shaft by spur gears.
+The hollow shaft is held at two points by angular bearings.
+
+\begin{figure}[htbp]
+  \begin{center}
+    \scalebox{0.2}{
+      \includegraphics{figure/azimuth_thruster.png}
+    }
+  \end{center}
+  \caption{The design of azimuth thruster}
+  \label{fig:azimuth_design}
+\end{figure}
+
 
 \subsection{MINI-V in the COVID-19}
 MINI-V(minitua vessel) was created in order to test the software easily in the Covid-19. Over the past several years, 
@@ -107,7 +143,11 @@ The concepts of MINI-V are follows:
   \item high compatibility between WAM-V and MINI-V.
 \end{enumerate}
 
+<<<<<<< HEAD
 \begin{figure}[h]
+=======
+\begin{figure}[htbp]
+>>>>>>> 9ba2b22f475bd82eda5642e0553ff593c926a940
   \begin{center}
     \scalebox{0.2}{
       \includegraphics{figure/arch_nav.eps}
@@ -117,17 +157,25 @@ The concepts of MINI-V are follows:
   \label{fig:arch_nav}
 \end{figure}
 
+<<<<<<< HEAD
 \begin{figure}[h]
+=======
+\begin{figure}[htbp]
+>>>>>>> 9ba2b22f475bd82eda5642e0553ff593c926a940
     \begin{center}
-      \scalebox{0.24}{
-      \includegraphics{figure/mini_v_component.png}
+      \scalebox{0.18}{
+      \includegraphics{figure/mini_v_component.eps}
     }
   \end{center}
   \caption{Hardware components of MINI-V}
   \label{fig:mini_v_component}
 \end{figure}
 
+<<<<<<< HEAD
 \begin{figure}[h]
+=======
+\begin{figure}[htbp]
+>>>>>>> 9ba2b22f475bd82eda5642e0553ff593c926a940
     \begin{center}
       \scalebox{0.28}{
         \includegraphics{figure/mini_v_overview.png}
@@ -137,11 +185,46 @@ The concepts of MINI-V are follows:
     \label{fig:mini_v_experiment}
   \end{figure}
 
-MINI-V is created to be easy to carry, and we can carry them by suitcase like Fig. \ref{fig:mini_v_component}.
+MINI-V is created to be easy to carry, and we can carry them by suitcase like Fig. \ref{fig:mini_v_component}. It is so small that we can
+float and test on the buthtab.
 It is also assembled simply. We develop this vessel on open source. So, other people can play or test their software with MINI-V. Finally,
 we expect the high compatibility between WAM-V and MINI-V, and it will make it easy to migrate developed software on MINI-V toWAM-V. However, 
 MINI-V have not had complete compatibility yet.
 We have future tasks to create a little bigger vessel to have compatible hardware and software such as batteries and sensors, and so on.
+
+\subsection{the prototype of the multicopter}
+In the RobotX 2022, the tasks about multicopter are add on the competition. The drone needs to be automated and pick up the task objects.
+We created the quadcopter below in Fig.\ref{fig:drone}.
+The flight controller, Pixacer Pro, is introduced to controll the drone. 
+In order to get the drone position, it has GNSS sensor on the plane.
+we conduct the test of estimating the self-position of the drone. As you can see Fig.\ref{fig:drone_posi} the drone can estimate
+the self-position With an error of $\pm 0.5 \mathrm{m}$ approxmately.
+At the moment. the drone is manually controled by a pilot but not automated.
+For automation, we need to add computers such as raspberryPi to send the operation into flight controller. 
+Moreover, the sensor such as cameras to recognize the task objects are needed.
+There are many considerations such as the roter-size, motor power, the size of body, and so on.
+We are going to develop the automated navigation system for drone in next years.
+
+\begin{figure}[htbp]
+  \begin{center}
+    \scalebox{0.2}{
+      \includegraphics{figure/drone.eps}
+    }
+  \end{center}
+  \caption{the componets of the drone}
+  \label{fig:drone}
+\end{figure}
+
+\begin{figure}[htbp]
+  \begin{center}
+    \scalebox{0.4}{
+      \includegraphics{figure/drone_posi.eps}
+    }
+  \end{center}
+  \caption{the estimated drone position and the track}
+  \label{fig:drone_posi}
+\end{figure}
+
 
 \section{Software Developments}
 \subsection{ROS2-based Autonomous Navigation Stack}
@@ -264,7 +347,11 @@ If the build test fails, the pull request cannot be merged.
 Failed build tests are notified to the OUXT-Polaris Slack so that members know immediately if a failure has occurred.
 Whole architecture of CI/CD pipeline shown in Fig.\ref{fig:ci_cd_pipeline}.
 
+<<<<<<< HEAD
 \begin{figure}[h]
+=======
+\begin{figure}[htbp]
+>>>>>>> 9ba2b22f475bd82eda5642e0553ff593c926a940
     \begin{center}
       \scalebox{0.18}{
       \includegraphics{figure/ci_cd_pipeline.png}
@@ -274,7 +361,11 @@ Whole architecture of CI/CD pipeline shown in Fig.\ref{fig:ci_cd_pipeline}.
   \label{fig:ci_cd_pipeline}
 \end{figure}
 
+<<<<<<< HEAD
 \begin{figure}[h]
+=======
+\begin{figure}[htbp]
+>>>>>>> 9ba2b22f475bd82eda5642e0553ff593c926a940
     \begin{center}
       \scalebox{0.18}{
       \includegraphics{figure/dashboard.png}
