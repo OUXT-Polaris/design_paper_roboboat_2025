@@ -213,12 +213,13 @@ so anyone in the world can try out the OUXT-Polaris navigation stack.
 We created hermite planner as the path planning module for WAM-V.
 Once the goal direction information from the behavior layer is obtained, the path shape is created using the Hermite curve in combination with the current position.
 The Hermite curve is a kind of parametric curve with continuous curvature, and its shape is determined by specifying a vector between two endpoints.
-The reason for using this method is that Catmull-Rom Spline, etc. can be created by connecting Hermite curves, so the creation function can be used repeatedly, and since Wam-V itself can turn on the spot, it can follow a steep path even if it is created.
+The reason for adopting Hermite curves is that Catmull-Rom Spline, etc. can be created by connecting Hermite curves, so the creation function can be used repeatedly.
+And since WAM-V itself can turn on the spot, WAM-V can follow the path such that angular velocity is large,even if the Hermite planner is created.
 \indent The components of hermite planner are explained sequentially.
 The local waypoint server calculates the distance between the destination and obstacles in the Fresnet coordinate system.
 If a contact is detected on the route, a route is created to reach the destination with a slight shift in the X and Y directions in the world coordinate system.
 For contact judgment in the Fresnet coordinate system, the nearest neighbor points between the Hermite curve and the 2D LaserScan obtained from the obstacle are calculated using the Newton method.
-From among them, the collision between WAM-V and the obstacle objects is judged to have occurred if Satisfying Equation 1 and 2, 3.
+From among them, the collision between WAM-V and the obstacle objects is judged to have occurred if Satisfying following equations.
 \begin{eqnarray}
   0<t<1\\
   f(t)<width+margin\\
