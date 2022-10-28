@@ -1,6 +1,6 @@
 build:
-	pdflatex -interaction nonstopmode main.tex
-	pdflatex -interaction nonstopmode main.tex
+	pdflatex main.tex || true
+	pdflatex main.tex || true
 clean:
 	rm *.pdf
 	rm *.log
