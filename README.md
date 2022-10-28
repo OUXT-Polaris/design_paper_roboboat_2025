@@ -12,5 +12,5 @@ sudo apt install texlive
 ### build
 
 ```
-pdflatex main.tex
+make build
 ```
