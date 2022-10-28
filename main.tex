@@ -54,7 +54,11 @@ Among these, automated driving is being developed with particular emphasis.
 Moving the autonomous vehicle or robot outside has a very severe problem.
 They need to hedge unknown obstacles and go to the target position.
 The environment such as weather, temperature, or underwater around robots causes sensor and hardware problems.
-There are each challenging problems and They are also interesting for us.  
+There are each challenging problems and They are also interesting for us, and there are different problems between land and ocean.
+On the land, the navigation or the estimation of the self-position is solved by the point cloud map and the odmetry,
+while on the ocean, the point cloud and the odmetry is not obtained enough. So the robots need to estimate the self-position using GPS and IMU sensors.
+Moreover, on the land, the position of the target objects and obstacles is obtained from Lidar data. On the other hand in the sea,
+waves disturbe to get the target positions. In that case, the robots have to fusion multiple data such as cameras and Lidars.
 In this competition, we have a chance to develop a system to get over the wild environment 
 for the robots on the ocean. Therefore, we are participating in the Maritime RobotX Challenge.
 
@@ -75,6 +79,8 @@ Finally, in the servo and thruster controllers, the servo motor direction and th
   \caption{the archtecture of navigation system}
   \label{fig:arch_nav}
 \end{figure}
+
+
 
 
 \section{Conclusion}
