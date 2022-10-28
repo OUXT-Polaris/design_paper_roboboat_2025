@@ -1,0 +1,12 @@
+name: Spellcheck
+on: [push]
+jobs:    
+  typo_ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Git repository
+        uses: actions/checkout@v2
+      - name: TypoCheck
+        uses: typoci/spellcheck-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
