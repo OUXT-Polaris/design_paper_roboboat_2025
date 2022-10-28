@@ -43,7 +43,7 @@ OUXT-Polaris has been developing an autonomous navigation system by participatin
 Maritime RobotX Challenge 2014, 2016, and 2018. 
 In this paper, we describe the improvement of the previous vessel system. 
 We also indicate the advantage of the improved design.
-Moreover, we describe the developing method for Covid-19 and the 
+Moreover, we describe the developing method under Covid-19 using simulation / miniture-size hardware and the 
 feature components for the next RobotX Challenge.
 \end{abstract}
 
@@ -66,6 +66,13 @@ Moreover, on the land, the position of the target objects and obstacles is obtai
 waves disturbe to get the target positions. In that case, the robots have to fusion multiple data such as cameras and Lidars.
 In this competition, we have a chance to develop a system to get over the wild environment 
 for the robots on the ocean. Therefore, we are participating in the Maritime RobotX Challenge.
+As shown in  Figs. \ref{fig:arch_nav}, and \ref{fig:pss},
+we designed the architecture of the vessel navigation system. 
+Our vessel navigation systems are composed of localization, perception, behavior, planning, and control.
+Our localization, behavior, and planning methods are based on classical methods,
+such as "Extended Kalman Filter", "Behavior Tree", "Cubic Hermite Spline" and "Velocity Control based on WAM-V Dynamics Model"
+Our perception methods are based on learning methods, such as "YOLOX".
+We beliefly describe the developed vessel navigation system as follows.
 
 \section{Overview of vessel system}
 \begin{figure}[H]
@@ -77,6 +84,7 @@ for the robots on the ocean. Therefore, we are participating in the Maritime Rob
   \caption{the archtecture of navigation system}
   \label{fig:arch_nav}
 \end{figure}
+
 \begin{figure}[H]
   \begin{center}
       \scalebox{0.9}{
@@ -86,13 +94,6 @@ for the robots on the ocean. Therefore, we are participating in the Maritime Rob
   \caption{the proposed software system}
   \label{fig:pss}
 \end{figure}
-
-As shown in  Figs. \ref{fig:arch_nav},\ref{fig:pss},
-we designed the architecture of the vessel navigation system. 
-Our vessel navigation systems are composed of localization, perception, behavior, planning, and control.
-Our localization, behavior, and planning methods are based on classical methods, such as "Extended Kalman Filter", "Behavior Tree", "Cubic Hermite Spline" and "Velocity Control based on WAM-V Dynamics Model"
-Our perception methods are based on learning methods, such as "YOLOX".
-We beliefly describe the developed vessel navigation system as follows.
 
 \begin{enumerate}
   \item {\it Localization}: 
@@ -330,16 +331,6 @@ All of our software is managed by ansible and can be deployed on real machines w
 It is open source, including the setup tools \cite{ouxt_automation} and it's documentation \cite{documentation_software},
 so anyone in the world can try out the OUXT-Polaris navigation stack.
 
-\begin{figure}[H]
-    \begin{center}
-        \scalebox{0.4}{
-        \includegraphics{figure/arch_nav.png}
-        }
-    \end{center}
-    \caption{The archtecture of navigation system}
-    \label{fig:arch_nav}
-\end{figure}
-
 \subsection{Behavior Tree}
 Using behavior tree can build WAM-V behaviors like a tree.  
 We use Groot \ref{fig:Groot}, GUI tools for designing behavior tree for smooth development.
@@ -451,8 +442,20 @@ WAM-V has a car-sized hull, and the setup alone consumes an entire day to conduc
 The development of a simulator is essential to speed up the development process.
 Therefore, we developed a simulator called navi\_sim.
 The reason we did not use vrx is that vrx is not yet compatible with ROS2.
-navi\_sim utilizes Embree, an open-source ray tracing library developed by Intel, to simulate lidar with fast CPU ray tracing.
+navi\_sim utilizes Embree \cite{embree}, an open-source ray tracing library developed by Intel, to simulate lidar with fast CPU ray tracing.
 It also provides various other functions such as semantic information output, camera view simulation, and simple ship motion model simulation.
+
+\begin{figure}[H]
+    \begin{center}
+      \scalebox{0.13}{
+      \includegraphics{figure/navi_sim.png}
+    }
+    \end{center}
+    \caption{Running our navigation stack with navi sim}
+    \label{fig:navi_sim}
+\end{figure}
+
+Blue rectangles in Fig. \ref{fig:navi_sim} is camera view simulation, and robot 3D models in \ref{fig:navi_sim} is simulated robot.
 
 \subsection{Infrastructure}
 Our system runs in a complex distributed computing environment that includes microcontrollers,
@@ -719,6 +722,9 @@ We hope these significant upgrades will produce positive results in the next com
 
     \bibitem{scan_segmentation}
     \url{https://github.com/OUXT-Polaris/scan_segmentation.git}
+
+    \bibitem{embree}
+    Attila T,et al. "Embree ray tracing kernels: overview and new features" SIGGRAPH (2016)
 
     \bibitem{wam-v-tan_bot}
     \url{https://github.com/wam-v-tan}
