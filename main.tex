@@ -266,21 +266,20 @@ Information we can get from the system is objects label, probabilities, and boun
 And we convert the information we can get from the system into information containing channel markers information 
 we can use in robotx challenge contains such as labels and coordinates in the same coordinate system of WAM-V etc.
 After search channel markers, WAM-V starts navigation.
-
-\begin{figure}[htbp]
-  \begin{center}
-    \scalebox{0.24}{
-      \includegraphics{figure/behavior_tree.png}
-    }
-  \end{center}
-  \caption{behavior flow}
-  \label{fig:behavior_flow}
-\end{figure}
-
 We need to act the Node two times in the task. So we defined two same nodes and connected them by Sequence node. 
 The sequence node is defined in the behavior tree.
 We made other Nodes, for example, move forward node, stop node and rotate around the buoy node.
 These nodes can realize many behavior patterns required in tasks.
+
+\begin{figure}[htbp]
+    \begin{center}
+      \scalebox{0.12}{
+        \includegraphics{figure/behavior_tree.png}
+      }
+    \end{center}
+    \caption{behavior flow}
+    \label{fig:behavior_flow}
+  \end{figure}
 
 \subsection{Object Detection}
 We used  YOLOX\cite{YOLOX} for object Detection of task object information such as buoys and docks.
