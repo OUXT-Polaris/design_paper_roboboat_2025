@@ -337,16 +337,6 @@ The image is part of a video recorded during our challenging navigation in the 2
 This model is based on the YOLOX-S network and converted into a tensorrt model.
 So, we can run an object detection model of more than 10 Hz in Jetson nano.
 
-\begin{figure}[h]
-    \begin{center}
-      \scalebox{0.2}{
-      \includegraphics{figure/jetson_nano.jpg}
-    }
-  \end{center}
-  \caption{Jetson Nano}
-  \label{fig:jetson_nano}
-\end{figure}
-
 \indent The point cloud from LiDAR preprocesses before fusion the camera image and the LiDAR point cloud.
 First, The point cloud from the LiDAR is filtered to remove outliers.
 Next, the filtered point cloud is downsampled to a 2D Laser Scan.
@@ -383,7 +373,7 @@ can test all software from deep-learning recognition systems to low-layer contro
 
 \begin{figure}[htbp]
     \begin{center}
-      \scalebox{0.36}{
+      \scalebox{0.18}{
       \includegraphics{figure/ci_cd_pipeline.png}
     }
   \end{center}
@@ -393,7 +383,7 @@ can test all software from deep-learning recognition systems to low-layer contro
 
 \begin{figure}[htbp]
     \begin{center}
-      \scalebox{0.36}{
+      \scalebox{0.18}{
       \includegraphics{figure/dashboard.png}
     }
   \end{center}
@@ -431,23 +421,13 @@ To give some concrete examples, the following tasks can be automated.
   \label{fig:tensorbord}
 \end{figure}
 
-\begin{figure}[htbp]
-    \begin{center}
-      \scalebox{0.23}{
-      \includegraphics{figure/inference_bot.png}
-    }
-  \end{center}
-  \caption{inference bot}
-  \label{fig:inference_bot}
-\end{figure}
-
 \begin{itemize}
     \item {\it Conversion of dataset formats }:
         We use labelme for annotation tools, but YOLOX use coco format for learning.
     \item {\it Performing training }:
         Virtualize the environment with nvidia docker and run scripts for learning on it
     \item {\it Visualization and versioning of training results }:
-        We can visualize inference result via Twitter bot(Fig.\ref{fig:inference_bot}) and tensorbord.dev(Fig.\ref{fig:tensorbord})
+        We can visualize inference result via Twitter bot(Fig.\cite{wam_v_tan_bot}) and tensorbord.dev(Fig.\ref{fig:tensorbord})
     \item {\it Model Conversion }:
         Need to convert PyTorch training results into a tensorrt model for faster inference.
 \end{itemize}
@@ -643,6 +623,9 @@ We hope these significant upgrades will produce positive results in the next com
 
     \bibitem{wamv_control}
     \url{https://github.com/OUXT-Polaris/wamv_control}
+
+    \bibitem{wam_v_tan_bot}
+    \url{https://twitter.com/wam_v_tan_bot}
 
 \end{thebibliography}
 
