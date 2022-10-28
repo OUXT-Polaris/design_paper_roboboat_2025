@@ -76,7 +76,7 @@ and the target velocity that WAM-V can trace the way is calculated.
 Finally, in the servo and thruster controllers,
 the servo motor direction and the thruster revolution to achieve the target velocity are calculated based on the vessel motion model.
 
-\begin{figure}[t]
+\begin{figure}[htbp]
     \begin{center}
         \scalebox{0.8}{
             \includegraphics{figure/proposed_sw_system.jpg}
@@ -107,7 +107,7 @@ The concepts of MINI-V are follows:
   \item high compatibility between WAM-V and MINI-V.
 \end{enumerate}
 
-\begin{figure}[t]
+\begin{figure}[htbp]
   \begin{center}
     \scalebox{0.2}{
       \includegraphics{figure/arch_nav.eps}
@@ -117,7 +117,7 @@ The concepts of MINI-V are follows:
   \label{fig:arch_nav}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[htbp]
     \begin{center}
       \scalebox{0.18}{
       \includegraphics{figure/mini_v_component.eps}
@@ -127,7 +127,7 @@ The concepts of MINI-V are follows:
   \label{fig:mini_v_component}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[htbp]
     \begin{center}
       \scalebox{0.28}{
         \includegraphics{figure/mini_v_overview.png}
@@ -157,7 +157,7 @@ Moreover, the sensor such as cameras to recognize the task objects are needed.
 There are many considerations such as the roter-size, motor power, the size of body, and so on.
 We are going to develop the automated navigation system for drone in next years.
 
-\begin{figure}[h]
+\begin{figure}[htbp]
   \begin{center}
     \scalebox{0.2}{
       \includegraphics{figure/drone.eps}
@@ -167,7 +167,7 @@ We are going to develop the automated navigation system for drone in next years.
   \label{fig:drone}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[htbp]
   \begin{center}
     \scalebox{0.4}{
       \includegraphics{figure/drone_posi.eps}
@@ -217,7 +217,7 @@ We used YOLOX\cite{YOLOX} for object Detection of task object information such a
 Using behavior tree can build WAM-V behaviors like a tree.  
 we used Groot for smooth development using behavior tree.
 
-\begin{figure}[h]
+\begin{figure}[htbp]
   \begin{center}
     \scalebox{0.24}{
       \includegraphics{figure/groot.png}
@@ -275,7 +275,7 @@ If the build test fails, the pull request cannot be merged.
 Failed build tests are notified to the OUXT-Polaris Slack so that members know immediately if a failure has occurred.
 Whole architecture of CI/CD pipeline shown in Fig.\ref{fig:ci_cd_pipeline}.
 
-\begin{figure}[t]
+\begin{figure}[htbp]
     \begin{center}
       \scalebox{0.18}{
       \includegraphics{figure/ci_cd_pipeline.png}
@@ -285,7 +285,7 @@ Whole architecture of CI/CD pipeline shown in Fig.\ref{fig:ci_cd_pipeline}.
   \label{fig:ci_cd_pipeline}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[htbp]
     \begin{center}
       \scalebox{0.18}{
       \includegraphics{figure/dashboard.png}
