@@ -82,8 +82,8 @@ the servo motor direction and the thruster revolution to achieve the target velo
             \includegraphics{figure/proposed_sw_system.jpg}
         }
     \end{center}
-    \caption{the archtecture of navigation system}
-    \label{fig:arch_nav}
+    \caption{the proposed software system}
+    \label{fig:pss}
 \end{figure}
 
 \section{Hardware Developments}
@@ -179,11 +179,11 @@ We have future tasks to create a little bigger vessel to have compatible hardwar
 \subsection{the prototype of the multicopter}
 In the RobotX 2022, the tasks about multicopter are add on the competition. The drone needs to be automated and pick up the task objects.
 We created the quadcopter below in Fig.\ref{fig:drone}.
-The flight controller, Pixacer Pro, is introduced to controll the drone. 
+The flight controller, Pixacer Pro\cite{pixracer}, is introduced to controll the drone. 
 In order to get the drone position, it has GNSS sensor on the plane.
 we conduct the test of estimating the self-position of the drone. As you can see Fig.\ref{fig:drone_posi} the drone can estimate
 the self-position With an error of $\pm 0.5 \mathrm{m}$ approxmately.
-At the moment. the drone is manually controled by a pilot but not automated.
+At the moment, the drone is manually controled by a pilot but not automated.
 For automation, we need to add computers such as raspberryPi to send the operation into flight controller. 
 Moreover, the sensor such as cameras to recognize the task objects are needed.
 There are many considerations such as the roter-size, motor power, the size of body, and so on.
@@ -223,7 +223,7 @@ Our software contributions are listed as follows.
     We rebuilt the software system from ROS1 to ROS2
   \item {\it Behavior Tree}:
   We adopted the behavior tree library in ROS2 and built our original behavior tree.  
-  \item {\it Camera LiDAR fusion}:
+  \item {\it Camera LiDAR object detection}:
     We are developing a lidar-camera fusion object detection system for this project.
   \item {\it Simulation Tool Development }:
     We developed LiDAR simulation by using intel ray-tracing OSS "Embree".
@@ -241,22 +241,18 @@ All of our software is managed by ansible and can be deployed on real machines w
 It is open source, including the setup tools \cite{ouxt_automation} and it's documentation \cite{documentation_software},
 so anyone in the world can try out the OUXT-Polaris navigation stack.
 
-
-\subsection{Camera LiDAR fusion}
-We used YOLOX\cite{YOLOX} for object Detection of task object information such as buoys and docks.
-
 \subsection{Behavior Tree}
 Using behavior tree can build WAM-V behaviors like a tree.  
 We use Groot \ref{fig:Groot}, GUI tools for designing behavior tree for smooth development.
 
-\begin{figure}[h]
-    \begin{center}
-      \scalebox{0.2}{
-        \includegraphics{figure/groot.png}
-      }
-    \end{center}
-    \caption{Groot example}
-    \label{fig:Groot}
+\begin{figure}[htbp]
+  \begin{center}
+    \scalebox{0.24}{
+      \includegraphics{figure/groot.png}
+    }
+  \end{center}
+  \caption{Groot example}
+  \label{fig:Groot}
 \end{figure}
 
 For example, in the WAM-V Dynamic Qualifying Task, 
@@ -264,12 +260,22 @@ we defined a node that navigation and searches channel markers.
 In searching channel markers behavior, first, we got the information from the result of lidar-camera fusion object detection system. 
 Information we can get from the system is objects label, probabilities, and bounding boxes.
 And we convert the information we can get from the system into information containing channel markers information 
-we can use in robotx challenge contains such as labels and distance from WAM-V etc.
+we can use in robotx challenge contains such as labels and coordinates in the same coordinate system of WAM-V etc.
 After search channel markers, WAM-V starts navigation.
 We need to act the Node two times in the task. So we defined two same nodes and connected them by Sequence node. 
 The sequence node is defined in the behavior tree.
 We made other Nodes, for example, move forward node, stop node and rotate around the buoy node.
 These nodes can realize many behavior patterns required in tasks.
+
+\begin{figure}[htbp]
+    \begin{center}
+      \scalebox{0.12}{
+        \includegraphics{figure/behavior_tree.png}
+      }
+    \end{center}
+    \caption{Pipeline between perception to behavior}
+    \label{fig:behavior_flow}
+  \end{figure}
 
 \subsection{Object Detection}
 We used  YOLOX\cite{YOLOX} for object Detection of task object information such as buoys and docks.
@@ -382,7 +388,7 @@ To give some concrete examples, the following tasks can be automated.
         Need to convert PyTorch training results into a tensorrt model for faster inference.
 \end{itemize}
 
-\begin{figure}[htbp]
+\begin{figure}[t]
     \begin{center}
       \scalebox{0.1}{
       \includegraphics{figure/tensorboard.png}
@@ -392,9 +398,9 @@ To give some concrete examples, the following tasks can be automated.
   \label{fig:tensorbord}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[t]
     \begin{center}
-      \scalebox{0.25}{
+      \scalebox{0.2}{
       \includegraphics{figure/inference_bot.png}
     }
   \end{center}
@@ -416,14 +422,90 @@ To achieve it, we built a simple mock server\cite{robotx_communication}.
 It displays received NMEA-like sentences from a simulation via a TCP connection.
 We also implemented a ROS2 node that collects information about the aircraft and sends heartbeats.
 
-\subsection{Controller}
+\subsection{WAM-V Controller}
 The WAM-V control system adopted the ros2\_control\cite{ros2_control,wamv_control}.
 The ros2\_control is a framework for real-time control of robots using ROS2.
-The WAM-V control is are calculated as follows.
+Our WAM-V controllers are listed as follows.
+\subsubsection{Equation of Motion}
+Our WAM-V equation of motion is calculated as follows.
 \begin{equation}
-  M \dot\nu = -D(\nu)\nu + F_H(\nu) + \tau
+  M \dot\nu = -D(\nu)\nu + \tau
+\end{equation}
+
+\begin{equation}
+  \nu = 
+  \begin{bmatrix}
+  u & v & \omega \\
+  \end{bmatrix}^T\\
   \label{eq:control_1}
 \end{equation}
+
+\begin{equation}
+\tau = 
+\begin{bmatrix}
+f_x & f_y & f_{yaw} \\
+\end{bmatrix}^T\\
+\end{equation}
+
+\begin{equation}
+M = 
+\begin{bmatrix}
+m+m_x &  0 & 0 \\
+0 & m+m_y & 0 \\
+0 & 0 & I_z + J_z
+\end{bmatrix}\\
+\end{equation}
+
+\begin{equation}
+D(\nu) = 
+\begin{bmatrix}
+0 & 0 & -mu \\
+0 & 0 & mv \\
+mu & -mu & 0
+\end{bmatrix}\\
+\end{equation}
+
+where $\nu$ is WAM-V velocity in WAM-V coordinate system.
+$\tau$ is WAM-V coordinate system input.
+$M$ is the mass matrix.
+$m$ is the WAM-V mass.
+$m_x$ and $m_y$ are the added mass of WAM-V in X and Y directions.
+$I_z$ is the WAM-V moment of inertia.
+$J_z$ is the WAM-V added moment of inertia.
+$D(\nu)$ is the WAM-V resistance coefficient matrix.
+
+\subsubsection{Differential Thruster Model}
+\begin{eqnarray}
+\tau &=& 
+\begin{bmatrix}
+f_x \\ 
+f_y \\
+f_{yaw} \\
+\end{bmatrix}\nonumber  \\
+&=&
+\begin{bmatrix}
+\dfrac{1}{2}(F_r + F_l) \\
+0 \\
+\dfrac{w}{2}(F_r - F_l) 
+\end{bmatrix} \\
+\nonumber  
+\end{eqnarray}
+
+where $Fr$ and $F_l$ are propulsion of right and left side thruster.
+$w$ is the distance between right and left thrusters.
+
+
+\subsubsection{Propeller Model}
+\begin{eqnarray}
+T &=& \rho n^2 D^4 K_t(J_s)\\
+K_t(J_s) &=& k_2J_s^2 + k_1J_s + k_0\\
+J_s &=& \dfrac{up}{nD}
+\end{eqnarray}
+
+where,
+$T$, $\rho$, and $D$ are the propeller thrust, fluid density, and propeller radius.
+$k_0$, $k_1$ and $k_2$ are constants values.
+$up$ and $n$ are inflow rate and rotation speed.
 
 
 \section{Conclusion}
@@ -440,6 +522,9 @@ We hope these significant upgrades will produce positive results in the next com
 \bibliographystyle{IEEEtran}
     \bibitem{robotx_ekf}
     \url{https://github.com/OUXT-Polaris/robotx_ekf}
+
+    \bibitem{pixracer}
+    \url{https://mrobotics.io/docs/pixracer-pro/}
 
     \bibitem{ROS2_paper}
     Steven Macenski, et al. "Robot Operating System 2: Design, architecture, and uses in the wild." Science Robotics (2022)
