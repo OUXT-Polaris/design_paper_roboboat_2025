@@ -74,7 +74,16 @@ Our software contributions are listed as follows.
   \item {\it Software System }:
     We rebuilt the software system from ROS1 to ROS2
   \item {\it Behavior Tree}:
-    We adopted the behavior tree library in ROS2 and built our original behavior tree.
+  We adopted the behavior tree library in ROS2 and built our original behavior tree.
+  Using behavior tree can build WAM-V behaviors like a tree.  
+  we used Groot for smooth development using behavior tree. 
+  For example, in the WAM-V Dynamic Qualifying Task, 
+  we defined a node that navigation and searches the channel markers with lidar-camera fusion object detection system.
+  We need to act the Node two times in the task. So we defined two same nodes and connected them by Sequence node. 
+  The sequence node is defined in the behavior tree.
+  We made other Nodes, for example, move forward node, stop node and rotate around the buoy node.
+  These nodes can realize many behavior patterns required in tasks.
+  
   \item {\it Simulation Tool Development }:
     We developed LiDAR simulation by using intel ray-tracing OSS "Embree".
   \item {\it CI/CD}:
