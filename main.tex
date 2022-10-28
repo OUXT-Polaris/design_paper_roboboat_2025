@@ -377,10 +377,30 @@ To give some concrete examples, the following tasks can be automated.
     \item {\it Performing training }:
         Virtualize the environment with nvidia docker and run scripts for learning on it
     \item {\it Visualization and versioning of training results }:
-        We can visualize inference result via Twitter bot and tensorbord.dev
+        We can visualize inference result via Twitter bot(Fig.\ref{fig:inference_bot}) and tensorbord.dev(Fig.\ref{fig:tensorbord})
     \item {\it Model Conversion }:
         Need to convert PyTorch training results into a tensorrt model for faster inference.
 \end{itemize}
+
+\begin{figure}[htbp]
+    \begin{center}
+      \scalebox{0.1}{
+      \includegraphics{figure/tensorboard.png}
+    }
+  \end{center}
+  \caption{training result in tensorbord.dev}
+  \label{fig:tensorbord}
+\end{figure}
+
+\begin{figure}[htbp]
+    \begin{center}
+      \scalebox{0.25}{
+      \includegraphics{figure/inference_bot.png}
+    }
+  \end{center}
+  \caption{inference bot}
+  \label{fig:inference_bot}
+\end{figure}
 
 All tasks are executed using the Self-hosted runner in GitHub actions, 
 which automatically executes the training when it detects additional events in the machine learning data set.
