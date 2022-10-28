@@ -258,7 +258,7 @@ We have future tasks to create a little bigger vessel to have compatible hardwar
   
 \begin{figure}[H]
     \begin{center}
-    \scalebox{0.25}{
+    \scalebox{0.3}{
         \includegraphics{figure/mini_v_overview.png}
     }
     \end{center}
@@ -291,14 +291,55 @@ We are going to develop the automated navigation system for drone in next years.
 
 \begin{figure}[H]
   \begin{center}
-    \scalebox{0.4}{
+    \scalebox{0.6}{
       \includegraphics{figure/drone_posi.png}
     }
   \end{center}
-  \caption{the estimated drone position and the track}
+  \caption{The estimated drone position and the track}
   \label{fig:drone_posi}
 \end{figure}
 
+\subsection{Emergency Stop System}
+
+There are four emergency stop switches on the outside of the hull, two of the normal switch type and one wireless one.
+When any one of these switches is turned on, the propulsion system is turned off and the ship comes to a safe stop.
+
+\begin{figure}[H]
+    \begin{center}
+        \scalebox{0.2}{
+            \includegraphics{figure/emergency_stop_system_diagram.png}
+        }
+    \end{center}
+    \caption{emergency stop system diagram}
+    \label{fig:emergency_stop_system_diagram}
+\end{figure}
+
+
+\begin{figure}[H]
+    \begin{center}
+        \scalebox{0.25}{
+            \includegraphics{figure/kill_switch_relay_driver_circuit.png}
+        }
+    \end{center}
+    \caption{kill switch relay driver circuit}
+    \label{fig:kill_switch_relay_driver_circuit}
+\end{figure}
+
+\begin{figure}[H]
+    \begin{center}
+        \scalebox{0.2}{
+            \includegraphics{figure/kill_switch_signal_circuit.png}
+        }
+    \end{center}
+    \caption{kill switch signal circuit}
+    \label{fig:kill_switch_signal_circuit}
+\end{figure}
+
+In a normal design, a relay used in such a case would drain about 10 W from its coil alone, which is a very high cost for OUXT-Polaris, which does not have sufficient battery capacity.
+To avoid this, we designed a circuit that would function reliably as a kill switch when necessary while reducing the power consumption of the relay coil.
+Specifically, we selected a relay that applies voltage only at the moment it is turned on and consumes little power at other times, and designed a circuit to accommodate this.
+This design achieved a significant reduction in power consumption and greatly extended the cruising time.
+In addition, a latch circuit was introduced so that only momentary switches can be operated.
 
 \section{Software Developments}
 \subsection{ROS2-based Autonomous Navigation Stack}
@@ -326,7 +367,29 @@ but also CAD models, and circuit data. \cite{documentation_hardware}
 
 \subsection{Software System Architecture}
 Our navigation stack is based on ROS2, but we do not use the navigation2 library. We develop our original software.
-Our software is highly modularized, so some of our members use our stacks in other autonomous mobility competitions.
+Our software is highly modularized, so some of our team members use our stacks in other autonomous mobility competitions. 
+(Fig.\ref{fig:whill},Fig. \ref{fig:whill_rviz})
+
+\begin{figure}[H]
+    \begin{center}
+        \scalebox{0.12}{
+            \includegraphics{figure/whill.png}
+        }
+    \end{center}
+    \caption{Autonomous mobility with our navigation stack}
+    \label{fig:whill}
+\end{figure}
+
+\begin{figure}[H]
+    \begin{center}
+        \scalebox{0.12}{
+            \includegraphics{figure/whill_rviz.png}
+        }
+    \end{center}
+    \caption{Autonomous mobility with our navigation stack (rviz)}
+    \label{fig:whill}
+\end{figure}
+
 All of our software is managed by ansible and can be deployed on real machines without the need for human intervention.
 It is open source, including the setup tools \cite{ouxt_automation} and it's documentation \cite{documentation_software},
 so anyone in the world can try out the OUXT-Polaris navigation stack.
