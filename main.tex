@@ -23,6 +23,7 @@
     Yusei Nagao, Osaka Institute of Tech., m1m22r23@oit.ac.jp \\ \and
     Tatsuki Nishimura, Osaka Univ., hbvcg00@gmail.com \\ \and
     Shunya Tanaka, , syun111@gmail.com \\ \and
+    Tatsuya Sanada, TXP Medical Co. Ltd., tatsuya.sh.tiny@gmail.com \\ \and
     Masaya Kataoka, TIER IV inc . , ms.kataoka@gmail.com,
 }
 
@@ -147,6 +148,71 @@ The hollow shaft is held at two points by angular bearings.
   \end{center}
   \caption{The design of azimuth thruster}
   \label{fig:azimuth_design}
+\end{figure}
+
+\subsection{Sensor Arrangement}
+
+LiDAR and a visible light camera are used for environmental awareness.
+Their arrangement is shown in the Fig. \ref{fig:sensor_arrangement}.
+
+\begin{figure}[htbp]
+  \begin{center}
+    \scalebox{0.2}{
+      \includegraphics{figure/sensor_arrangement.png}
+    }
+  \end{center}
+  \caption{Sensor Arrangement}
+  \label{fig:sensor_arrangement}
+\end{figure}
+
+In total, 6 cameras and 4 LiDARs are used.
+Different LiDARs are used for the front and rear views and for the left and right views.
+The VLP-16 from Velodyne Lidar is used for the front/rear view to provide a wide range of vision, mainly in the direction of boat travel, and the MID-70 from Livox is selected for the left/right view to see the docking bay near the hull in the docking task.
+For the cameras, a module with an IMX-219 image sensor and a lens with a 120-degree diagonal field of view was used.
+This allows the acquisition of point cloud information and visible light images covering 360 degrees around the boat.
+
+\subsection{The Perception Array and the Perception Camera}
+
+To perform point cloud fusion using a visible light camera and LiDAR, it is necessary to accurately calibrate the relative positions of the sensors.
+Therefore, once the sensors are assembled on the hull, they cannot be easily removed for testing on land.
+
+To solve this problem, we have developed a sensor unit that consists of a LiDAR and two cameras fixed to a rigid frame and can be mounted on or carried by various robots while maintaining the accuracy of the relative positioning between the sensors.
+We call it a perception array.
+
+The foreground and background views of the designed perception array are shown in Fig. \ref{fig:perception_array_front} and Fig. \ref{fig:perception_array_back}, respectively.
+
+\begin{figure}[htbp]
+  \begin{center}
+    \scalebox{0.2}{
+      \includegraphics{figure/perception_array_front.png}
+    }
+  \end{center}
+  \caption{Front view of the Perception Array}
+  \label{fig:perception_array_front}
+\end{figure}
+
+\begin{figure}[htbp]
+  \begin{center}
+    \scalebox{0.2}{
+      \includegraphics{figure/perception_array_back.png}
+    }
+  \end{center}
+  \caption{Rear view of the Perception Array}
+  \label{fig:perception_array_back}
+\end{figure}
+
+The cameras are mounted on the left and right sides, and the LiDAR is mounted upside down at the bottom.
+The box in the center contains the power supply function and the switching hub.
+This configuration is shown in the Fig. \ref{fig:perception_aray_diagram}.
+
+\begin{figure}[htbp]
+  \begin{center}
+    \scalebox{0.2}{
+      \includegraphics{figure/perception_aray_diagram.png}
+    }
+  \end{center}
+  \caption{Diagram of the Perception Array}
+  \label{fig:perception_aray_diagram}
 \end{figure}
 
 
@@ -297,7 +363,47 @@ These nodes can realize many behavior patterns required in tasks.
     \label{fig:behavior_flow}
   \end{figure}
 
-\subsection{Object Detection}
+\subsection{Planner components}
+We created hermite planner as the path planning module for WAM-V.
+Once the goal direction information from the behavior layer is obtained, the path shape is created using the Hermite curve in combination with the current position.
+The Hermite curve is a kind of parametric curve with continuous curvature, and its shape is determined by specifying a vector between two endpoints.
+The reason for adopting Hermite curves is that Catmull-Rom Spline, etc. can be created by connecting Hermite curves, so the creation function can be used repeatedly.
+And since WAM-V itself can turn on the spot, WAM-V can follow the path such that angular velocity is large,even if the Hermite planner is created.
+\indent The components of hermite planner are explained sequentially.
+The local waypoint server calculates the distance between the destination and obstacles in the Fresnet coordinate system.
+If a contact is detected on the route, a route is created to reach the destination with a slight shift in the X and Y directions in the world coordinate system.
+For contact judgment in the Fresnet coordinate system, the nearest neighbor points between the Hermite curve and the 2D LaserScan obtained from the obstacle are calculated using the Newton method.
+From among them, the collision between WAM-V and the obstacle objects is judged to have occurred if Satisfying following equations.
+\begin{eqnarray}
+  0<t<1\\
+  f(t)<width+margin\\
+  f(t)=at^3+bt^2+c^2+d
+  \end{eqnarray}
+When the Hermite curve is determined, the calculation of the velocity constraint is performed using several velocity modules.
+The first is stop planner, which creates a speed commitment to stop at the destination end of the route.
+This speed module creates a speed commitment to slow down at a constant acceleration before heading to the destination.
+Second, there is an obstacle planner to perform a stop before obstacle objects.
+This constraint to stop before the obstacle uses the same method as stop planner.
+The third is a curve planner to prevent the angular velocity from exceeding a certain value.
+It creates a velocity constraint so that the angular velocity between points on the created Hermite curve does not become too large.
+Each of these three creates velocity constraints independently, integrates the information from each of them.
+And, the graph adjusts the velocity constraints, and searches the velocity.
+Creating a velocity plan on the route by deleting edges with too much acceleration as edges with increasing or decreasing velocity between them as nodes on each curve.
+Then, based on the created route and the ship's own self-position, the pure pursuit planner is used to follow the route.
+A contact point between the circle centered on the WAM-V's self-position and the path is created, and the angular velocity and speed up to that contact point is calculated.
+In addition, a straight line is created on the extension of the endpoint to approximate the endpoint so that the endpoint does not run out of control.
+Fig.\ref{fig:the part of planning results} is shown as an the part of planning results by the above path planning module.
+\begin{figure}[htbp]
+  \begin{center}
+    \scalebox{0.5}{
+      \includegraphics{figure/example_planner.png}
+    }
+  \end{center}
+  \caption{the part of planning results}
+  \label{fig:the part of planning results}
+\end{figure}
+
+\subsection{Camera LiDAR fusion}
 We used  YOLOX\cite{YOLOX} for object Detection of task object information such as buoys and docks.
 We created annotation data based on images and videos obtained from past RobotX Challenges.
 We open our annotation data for speeding up future development for Maritime RobotX. \cite{dataset_annotations}
@@ -316,16 +422,6 @@ The result of training and inference is shown in Fig.\ref{fig:inference}.
 The image is part of a video recorded during our challenging navigation in the 2018 RobotX Challenge.\cite{RobotX2018_video}
 This model is based on the YOLOX-S network and converted into a tensorrt model.
 So, we can run an object detection model of more than 10 Hz in Jetson nano.
-
-\begin{figure}[h]
-    \begin{center}
-      \scalebox{0.2}{
-      \includegraphics{figure/jetson_nano.jpg}
-    }
-  \end{center}
-  \caption{Jetson Nano}
-  \label{fig:jetson_nano}
-\end{figure}
 
 \indent The point cloud from LiDAR preprocesses before fusion the camera image and the LiDAR point cloud.
 First, The point cloud from the LiDAR is filtered to remove outliers.
@@ -363,7 +459,7 @@ can test all software from deep-learning recognition systems to low-layer contro
 
 \begin{figure}[htbp]
     \begin{center}
-      \scalebox{0.36}{
+      \scalebox{0.18}{
       \includegraphics{figure/ci_cd_pipeline.png}
     }
   \end{center}
@@ -373,7 +469,7 @@ can test all software from deep-learning recognition systems to low-layer contro
 
 \begin{figure}[htbp]
     \begin{center}
-      \scalebox{0.36}{
+      \scalebox{0.18}{
       \includegraphics{figure/dashboard.png}
     }
   \end{center}
@@ -411,23 +507,13 @@ To give some concrete examples, the following tasks can be automated.
   \label{fig:tensorbord}
 \end{figure}
 
-\begin{figure}[htbp]
-    \begin{center}
-      \scalebox{0.23}{
-      \includegraphics{figure/inference_bot.png}
-    }
-  \end{center}
-  \caption{inference bot}
-  \label{fig:inference_bot}
-\end{figure}
-
 \begin{itemize}
     \item {\it Conversion of dataset formats }:
         We use labelme for annotation tools, but YOLOX use coco format for learning.
     \item {\it Performing training }:
         Virtualize the environment with nvidia docker and run scripts for learning on it
     \item {\it Visualization and versioning of training results }:
-        We can visualize inference result via Twitter bot(Fig.\ref{fig:inference_bot}) and tensorbord.dev(Fig.\ref{fig:tensorbord})
+        We can visualize inference result via Twitter bot(Fig.\cite{wam_v_tan_bot}) and tensorbord.dev(Fig.\ref{fig:tensorbord})
     \item {\it Model Conversion }:
         Need to convert PyTorch training results into a tensorrt model for faster inference.
 \end{itemize}
@@ -531,6 +617,44 @@ $T$, $\rho$, and $D$ are the propeller thrust, fluid density, and propeller radi
 $k_0$, $k_1$ and $k_2$ are constants values.
 $up$ and $n$ are inflow rate and rotation speed.
 
+\section{Firmware}
+We use the same microcontroller for two main purposes.
+The reason for using the same microcontroller is to make it easier to have a spare in case of failure during the competition.
+We considered several types of microcontrollers and finally adopted NUCLEO-F767ZI (Fig.\ref{fig:f767zi}) from STM Corp.
+
+\begin{table}[htbp]
+    \caption{board selection}
+    \label{table:board_selection}
+    \centering
+     \begin{tabular}{clll}
+      \hline
+      board & ROS2 Integration & Ethernet & Serial \\
+      \hline \hline
+      NUCLEO-F767ZI & mROS2 & Yes & Yes \\
+      Teensy 4.0 & micor-ROS & No & Yes \\
+      Arduino Due & micro-ROS & No & Yes \\
+      LPC1768 & raw-TCP/IP & Yes & Yes \\
+      \hline
+     \end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+    \begin{center}
+      \scalebox{0.23}{
+      \includegraphics{figure/f767zi.png}
+    }
+  \end{center}
+  \caption{NUCLEO-F767ZI microcontroller}
+  \label{fig:f767zi}
+\end{figure}
+
+The two roles of the microcontroller are to drive the motor and monitor the supply voltage.
+In order to meet the specifications for designing a real-time guaranteed control system for the motor drive,
+we implemented firmware that connects ROS2 through packet communication with the speed control system and UDP communication,
+which were specified in the previous chapter.
+For the other role of monitoring the power supply voltage, a real-time guarantee was not necessary.
+Instead, it was necessary to be able to easily communicate with ROS2 via Pub/Sub, so mROS2, an embedded communication library compatible with ROS2, 
+was adopted to realize communication between the lower layers and higher layers using the ROS2 system.
 
 \section{Conclusion}
 In this paper, OUXT-Polaris reported the development of the autonomous navigation system for the 2022 RobotX Challenge.
@@ -585,6 +709,9 @@ We hope these significant upgrades will produce positive results in the next com
 
     \bibitem{wamv_control}
     \url{https://github.com/OUXT-Polaris/wamv_control}
+
+    \bibitem{wam_v_tan_bot}
+    \url{https://twitter.com/wam_v_tan_bot}
 
 \end{thebibliography}
 
