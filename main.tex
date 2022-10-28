@@ -21,6 +21,7 @@
     Kyoma Arai, Tokai Univ. , 2cemm007@mail.u-tokai.ac.jp \\ \and
     Masato Kobayashi, Kobe Univ. , 171w951w@gsuite.kobe-u.ac.jp \\ \and
     Yusei Nagao, Osaka Institute of Tech., m1m22r23@oit.ac.jp \\ \and
+    Tatsuki Nishimura, Osaka Univ., hbvcg00@gmail.com \\ \and
     Shunya Tanaka, , syun111@gmail.com \\ \and
     Masaya Kataoka, TIER IV inc . , ms.kataoka@gmail.com,
 }
@@ -65,8 +66,9 @@ In this competition, we have a chance to develop a system to get over the wild e
 for the robots on the ocean. Therefore, we are participating in the Maritime RobotX Challenge.
 
 \section{Overview of vessel system}
-First, we describe the architecture of the navigation system. As you can see \ref{fig:arch_nav},
-the position and the velocity of WAM-V are estimated using the Extended Kalman Filter from the data of the GNSS and IMU sensors.
+First, we describe the architecture of the navigation system. As you can see Fig. \ref{fig:arch_nav},
+the position and the velocity of WAM-V are estimated using the 6DoF Extended Kalman Filter \cite{robotx_ekf}
+from the data of the GNSS and IMU sensors.
 The obstacles and task objects are recognized from lidar and camera data. Based on the self-position and the task objects, 
 WAM-V decides where to go and what to do next.
 After getting the target position, the path is created by the path planner,
@@ -74,7 +76,49 @@ and the target velocity that WAM-V can trace the way is calculated.
 Finally, in the servo and thruster controllers,
 the servo motor direction and the thruster revolution to achieve the target velocity are calculated based on the vessel motion model.
 
+\begin{figure}[htbp]
+    \begin{center}
+        \scalebox{0.8}{
+            \includegraphics{figure/proposed_sw_system.jpg}
+        }
+    \end{center}
+    \caption{the archtecture of navigation system}
+    \label{fig:arch_nav}
+\end{figure}
+
 \section{Hardware Developments}
+
+\subsection{Redesign of Azimuth Thruster}
+
+We considered the following three issues when designing the propulsion mechanism.
+
+First, we considered it important for the boat to be able to generate lateral propulsive force to complete the docking task.
+When propulsion units are mounted on the two aft sections of the boat, each propulsion unit must have a degree of freedom in the yaw axis to generate thrust in any direction in the horizontal plane.
+This propulsion system is generally called an azimuth thruster.
+
+Next, the electric outboard motors that are commonly available have a circular cross-section for the mounting shaft, so it is necessary to find a way to fix the shaft tightly.
+
+In addition, the propeller must avoid contact with the seafloor when the vessel needs to navigate in shallow water, such as when launching the boat on the course. Since it is dangerous for a person to enter shallow water and lift the thruster with a tool, a mechanism that can easily raise and lower the thruster was necessary.
+
+To meet these requirements, we designed the mechanism shown in Fig. \ref{fig:azimuth_design}.
+The three functions of gripping, rotating, and elevating are integrated into a single unit.
+
+The gripping function was realized using a PLA plastic collet manufactured by a 3D printer.
+The collet is pushed axially by a screw into an aluminum hollow shaft with a wedge-shaped cross section to enable strong shaft gripping.
+
+The azimuth mechanism is realized by transmitting the rotational force from the servo motor (XM540-W270, Dynamixel) to the hollow shaft by spur gears.
+The hollow shaft is held at two points by angular bearings.
+
+\begin{figure}[htbp]
+  \begin{center}
+    \scalebox{0.2}{
+      \includegraphics{figure/azimuth_thruster.png}
+    }
+  \end{center}
+  \caption{The design of azimuth thruster}
+  \label{fig:azimuth_design}
+\end{figure}
+
 
 \subsection{MINI-V in the COVID-19}
 MINI-V(minitua vessel) was created in order to test the software easily in the Covid-19. Over the past several years, 
@@ -95,9 +139,9 @@ The concepts of MINI-V are follows:
   \item high compatibility between WAM-V and MINI-V.
 \end{enumerate}
 
-\begin{figure}[h]
+\begin{figure}[htbp]
   \begin{center}
-    \scalebox{0.24}{
+    \scalebox{0.2}{
       \includegraphics{figure/arch_nav.eps}
     }
   \end{center}
@@ -105,20 +149,19 @@ The concepts of MINI-V are follows:
   \label{fig:arch_nav}
 \end{figure}
 
-
-\begin{figure}[h]
+\begin{figure}[htbp]
     \begin{center}
-      \scalebox{0.24}{
-      \includegraphics{figure/mini_v_component.png}
+      \scalebox{0.18}{
+      \includegraphics{figure/mini_v_component.eps}
     }
   \end{center}
   \caption{Hardware components of MINI-V}
   \label{fig:mini_v_component}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[htbp]
     \begin{center}
-      \scalebox{0.24}{
+      \scalebox{0.28}{
         \includegraphics{figure/mini_v_overview.png}
       }
     \end{center}
@@ -126,17 +169,52 @@ The concepts of MINI-V are follows:
     \label{fig:mini_v_experiment}
   \end{figure}
 
-MINI-V is created to be easy to carry, and we can carry them by suitcase like Fig. \ref{fig:mini_v_component}.
+MINI-V is created to be easy to carry, and we can carry them by suitcase like Fig. \ref{fig:mini_v_component}. It is so small that we can
+float and test on the buthtab.
 It is also assembled simply. We develop this vessel on open source. So, other people can play or test their software with MINI-V. Finally,
 we expect the high compatibility between WAM-V and MINI-V, and it will make it easy to migrate developed software on MINI-V toWAM-V. However, 
 MINI-V have not had complete compatibility yet.
 We have future tasks to create a little bigger vessel to have compatible hardware and software such as batteries and sensors, and so on.
 
+\subsection{the prototype of the multicopter}
+In the RobotX 2022, the tasks about multicopter are add on the competition. The drone needs to be automated and pick up the task objects.
+We created the quadcopter below in Fig.\ref{fig:drone}.
+The flight controller, Pixacer Pro, is introduced to controll the drone. 
+In order to get the drone position, it has GNSS sensor on the plane.
+we conduct the test of estimating the self-position of the drone. As you can see Fig.\ref{fig:drone_posi} the drone can estimate
+the self-position With an error of $\pm 0.5 \mathrm{m}$ approxmately.
+At the moment. the drone is manually controled by a pilot but not automated.
+For automation, we need to add computers such as raspberryPi to send the operation into flight controller. 
+Moreover, the sensor such as cameras to recognize the task objects are needed.
+There are many considerations such as the roter-size, motor power, the size of body, and so on.
+We are going to develop the automated navigation system for drone in next years.
+
+\begin{figure}[htbp]
+  \begin{center}
+    \scalebox{0.2}{
+      \includegraphics{figure/drone.eps}
+    }
+  \end{center}
+  \caption{the componets of the drone}
+  \label{fig:drone}
+\end{figure}
+
+\begin{figure}[htbp]
+  \begin{center}
+    \scalebox{0.4}{
+      \includegraphics{figure/drone_posi.eps}
+    }
+  \end{center}
+  \caption{the estimated drone position and the track}
+  \label{fig:drone_posi}
+\end{figure}
+
+
 \section{Software Developments}
 \subsection{ROS2-based Autonomous Navigation Stack}
 In “Maritime RobotX Challenge 2018”, we used Robot Operating System 1(ROS1) for developing software.
 However, the development of ROS1 was finished with python2 end of life.
-Therefore, we adopted the next generation of ROS called “ROS2”.
+Therefore, we adopted the next generation of ROS called “ROS2”. \cite{ROS2_paper}
 As shown in Fig. 1, our ROS2-based simulation and software system was already developed.
 Our software contributions are listed as follows.
 
@@ -145,25 +223,101 @@ Our software contributions are listed as follows.
     We rebuilt the software system from ROS1 to ROS2
   \item {\it Behavior Tree}:
     We adopted the behavior tree library in ROS2 and built our original behavior tree.
+  \item {\it Camera LiDAR fusion}:
+    We are developing a lidar-camera fusion object detection system for this project.
   \item {\it Simulation Tool Development }:
     We developed LiDAR simulation by using intel ray-tracing OSS "Embree".
-  \item {\it CI/CD}:
-    CI/CD systems are developed on the GitHub Actions Platform.
-  \item {\it Object Detection}:
-    We are developing a lidar-camera fusion object detection system for this project.
+  \item {\it Infrastructure}
+    We developed some automation tools for develop quickly.
 \end{itemize}
 We published all codes in GitHub to give feedback knowledge to the ROS community and 
-Open-Source all our resources not only software but also including CAD models, and circuit data.
+Open-Source all our resources not only software \cite{documentation_software}
+but also CAD models, and circuit data. \cite{documentation_hardware}
 
 \subsection{Software System Architecture}
 Our navigation stack is based on ROS2, but we do not use the navigation2 library. We develop our original software.
 Our software is highly modularized, so some of our members use our stacks in other autonomous mobility competitions.
+All of our software is managed by ansible and can be deployed on real machines without the need for human intervention.
+It is open source, including the setup tools \cite{ouxt_automation} and it's documentation \cite{documentation_software},
+so anyone in the world can try out the OUXT-Polaris navigation stack.
 
-\subsection{Object Detection}
-We used  YOLOX\cite{YOLOX} for object Detection of task object information such as buoys and docks.
+\subsection{Camera LiDAR fusion}
+We used YOLOX\cite{YOLOX} for object Detection of task object information such as buoys and docks.
 We created annotation data based on images and videos obtained from past RobotX Challenges.
+We open our annotation data for speeding up future development for Maritime RobotX. \cite{dataset_annotations}
 The result of training and inference is shown in Fig. hoge. 
-The image is part of a video recorded during our challenging navigation in the 2018 RobotX Challenge.\cite{{RobotX2018_video}}
+The image is part of a video recorded during our challenging navigation in the 2018 RobotX Challenge.\cite{RobotX2018_video}
+\indent The point cloud from LiDAR preprocesses before fusion the camera image and the LiDAR point cloud.
+First, The point cloud from the LiDAR is filtered to remove outliers.
+Next, the filtered point cloud is downsampled to a 2D Laser Scan.
+Then, the object area is extracted from the 2D LaserScan. \cite{scan_segmentation}
+The extraction algorithm determines the object area information based on whether the distance between 
+the neighboring LaserScan is less than the threshold value determined adaptively.
+The clustered point cloud is projected on the camera images.
+And we will match the bounding IOU and the object label on the images by Hungarian method.
+
+\subsection{Infrastructure}
+Our system runs in a complex distributed computing environment that includes microcontrollers,
+so the configuration file is huge and there are many processes that need to be launched to start the system.
+If such a system is deployed manually, various human errors are expected to occur.
+In addition, there are 77 ROS2 packages that make up our autonomous navigation system,
+and it is almost impossible to manage all of them manually without error.
+To solve these problems, we used a configuration management tool called ansible.
+ansible can support environment construction procedures on the computer in YAML format and
+can switch between development and production environments with a single option.
+With the adoption of ansible, setting up our system is just a matter of running a single shell script.
+
+Also, even if the ROS2 package does not have any changes in the code of the package itself,
+the software may break if there are changes in the packages on which the package depends.
+To detect and fix this quickly, we built a CI system using GitHub Actions.
+CI is a technology called continuous integration, which detects commits to Github, etc.,
+and automatically performs tests to find defects early.
+When a pull request is issued for any of the packages we manage, a build test is automatically performed once a day.
+If the build test fails, the pull request cannot be merged.
+Failed build tests are notified to the OUXT-Polaris Slack so that members know immediately if a failure has occurred.
+Whole architecture of CI/CD pipeline shown in Fig.\ref{fig:ci_cd_pipeline}.
+
+\begin{figure}[htbp]
+    \begin{center}
+      \scalebox{0.18}{
+      \includegraphics{figure/ci_cd_pipeline.png}
+    }
+  \end{center}
+  \caption{CI/CD Pipeline}
+  \label{fig:ci_cd_pipeline}
+\end{figure}
+
+\begin{figure}[htbp]
+    \begin{center}
+      \scalebox{0.18}{
+      \includegraphics{figure/dashboard.png}
+    }
+  \end{center}
+  \caption{CI/CD Dashboard}
+  \label{fig:ci_cd_dashboard}
+\end{figure}
+
+We divide our packages into smaller pieces in order to maintain the high degree of component nature of the packages we develop.
+This reduces unnecessary build targets and greatly reduces CI time (tests that originally took 30 minutes or more are now only 3 minutes).
+However, since there are more than 40 packages under our control alone,
+it is impossible to keep track of their development and testing status without tools.
+Therefore, we built a system that calls the API of GitHub and automatically creates a dashboard in Fig.\ref{fig:ci_cd_dashboard}.
+All of these deliverables are also open-source software.
+We also developed GitHub Actions to configure GitHub Actions to unify CI procedures for multiple repositories and
+built a system to synchronize CI procedures at all times via bot accounts. \cite{wam-v-tan_bot}
+
+GitHub Actions is also used when deploying to the actual machine.
+GitHub Actions has a function called Self-Hosted Runner, which allows you to remotely execute any command using your own computer.
+Using this function, after the CI of the ROS2 package is completed, 
+a configuration file with all commit hashes fixed is created and deployed to the actual device
+using Github Actions/ansible based on that configuration file.
+This allows our team to deploy the verified and up-to-date source code to the machine at the push of a button.
+\subsection{A Mock Server}
+We must report the vehicle's status as the Autonomous Maritime System heartbeat to a Technical Director server via a TCP connection. 
+Our team usually tests navigation systems using a simulation environment, 
+so we should check the heartbeat sentence on the simulation loop. 
+To achieve it, we built a simple mock server. 
+It displays received NMEA-like sentences from a simulation via a TCP connection.
 
 \subsection{Controller}
 The WAM-V control system adopted the ros2\_control\cite{ros2_control,wamv_control}.
@@ -263,12 +417,35 @@ We hope these significant upgrades will produce positive results in the next com
 % \section*{Acknowledgments}
 \begin{thebibliography}{1}
 \bibliographystyle{IEEEtran}
+    \bibitem{robotx_ekf}
+    \url{https://github.com/OUXT-Polaris/robotx_ekf}
 
-  \bibitem{YOLOX}
-  Ge, Zheng, et al. "Yolox: Exceeding yolo series in 2021." arXiv preprint arXiv:2107.08430 (2021).
+    \bibitem{ROS2_paper}
+    Steven Macenski, et al. "Robot Operating System 2: Design, architecture, and uses in the wild." Science Robotics (2022)
 
-  \bibitem{RobotX2018_video}
-  \url{https://www.youtube.com/watch?v=MqDBxzS4uy4}
+    \bibitem{ouxt_automation}
+    \url{https://github.com/OUXT-Polaris/ouxt_automation.git}
+
+    \bibitem{documentation_software}
+    \url{https://ouxt-polaris.github.io/ouxt_automation/}
+
+    \bibitem{documentation_hardware}
+    \url{https://ouxt-polaris.github.io/robotx-hardware-documentation/}
+
+    \bibitem{YOLOX}
+    Ge, Zheng, et al. "Yolox: Exceeding yolo series in 2021." arXiv preprint arXiv:2107.08430 (2021).
+
+    \bibitem{dataset_annotations}
+    \url{https://github.com/OUXT-Polaris/dataset_annotations.git}
+
+    \bibitem{RobotX2018_video}
+    \url{https://www.youtube.com/watch?v=MqDBxzS4uy4}
+
+    \bibitem{dataset_annotations}
+    \url{https://github.com/OUXT-Polaris/scan_segmentation.git}
+
+    \bibitem{wam-v-tan_bot}
+    \url{https://github.com/wam-v-tan}
 
   \bibitem{ros2_control}
   \url{https://github.com/ros-controls/ros2_control}
