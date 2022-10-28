@@ -65,8 +65,9 @@ In this competition, we have a chance to develop a system to get over the wild e
 for the robots on the ocean. Therefore, we are participating in the Maritime RobotX Challenge.
 
 \section{Overview of vessel system}
-First, we describe the architecture of the navigation system. As you can see \ref{fig:arch_nav},
-the position and the velocity of WAM-V are estimated using the Extended Kalman Filter from the data of the GNSS and IMU sensors.
+First, we describe the architecture of the navigation system. As you can see Fig. \ref{fig:arch_nav},
+the position and the velocity of WAM-V are estimated using the 6DoF Extended Kalman Filter \cite{robotx_ekf}
+from the data of the GNSS and IMU sensors.
 The obstacles and task objects are recognized from lidar and camera data. Based on the self-position and the task objects, 
 WAM-V decides where to go and what to do next.
 After getting the target position, the path is created by the path planner,
@@ -162,13 +163,15 @@ Our software contributions are listed as follows.
     We are developing a lidar-camera fusion object detection system for this project.
 \end{itemize}
 We published all codes in GitHub to give feedback knowledge to the ROS community and 
-Open-Source all our resources not only software but also including CAD models, and circuit data.
+Open-Source all our resources not only software \cite{documentation_software}
+but also CAD models, and circuit data. \cite{documentation_hardware}
 
 \subsection{Software System Architecture}
 Our navigation stack is based on ROS2, but we do not use the navigation2 library. We develop our original software.
 Our software is highly modularized, so some of our members use our stacks in other autonomous mobility competitions.
 All of our software is managed by ansible and can be deployed on real machines without the need for human intervention.
-It is open source, including the setup tools \cite{ouxt_automation}, so anyone in the world can try out the OUXT-Polaris navigation stack.
+It is open source, including the setup tools \cite{ouxt_automation} and it's documentation \cite{documentation_software},
+so anyone in the world can try out the OUXT-Polaris navigation stack.
 
 \subsection{Camera LiDAR fusion}
 We used YOLOX\cite{YOLOX} for object Detection of task object information such as buoys and docks.
@@ -195,11 +198,20 @@ We hope these significant upgrades will produce positive results in the next com
 % \section*{Acknowledgments}
 \begin{thebibliography}{1}
 \bibliographystyle{IEEEtran}
+    \bibitem{robotx_ekf}
+    \url{https://github.com/OUXT-Polaris/robotx_ekf}
+
     \bibitem{ROS2_paper}
     Steven Macenski, et al. "Robot Operating System 2: Design, architecture, and uses in the wild." Science Robotics (2022)
 
     \bibitem{ouxt_automation}
     \url{https://github.com/OUXT-Polaris/ouxt_automation.git}
+
+    \bibitem{documentation_software}
+    \url{https://ouxt-polaris.github.io/ouxt_automation/}
+
+    \bibitem{documentation_hardware}
+    \url{https://ouxt-polaris.github.io/robotx-hardware-documentation/}
 
     \bibitem{YOLOX}
     Ge, Zheng, et al. "Yolox: Exceeding yolo series in 2021." arXiv preprint arXiv:2107.08430 (2021).
