@@ -239,7 +239,15 @@ Then, based on the created route and the ship's own self-position, the pure purs
 A contact point between the circle centered on the WAM-V's self-position and the path is created, and the angular velocity and speed up to that contact point is calculated.
 In addition, a straight line is created on the extension of the endpoint to approximate the endpoint so that the endpoint does not run out of control.
 Fig. hoge is shown as an example of route creation by the above path planning module.
-
+\begin{figure}[h]
+  \begin{center}
+    \scalebox{0.2}{
+      \includegraphics{figure/drone.eps}
+    }
+  \end{center}
+  \caption{the componets of the drone}
+  \label{fig:drone}
+\end{figure}
 \subsection{Camera LiDAR fusion}
 We used YOLOX\cite{YOLOX} for object Detection of task object information such as buoys and docks.
 We created annotation data based on images and videos obtained from past RobotX Challenges.
