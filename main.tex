@@ -23,6 +23,7 @@
     Masato Kobayashi, Kobe Univ. , 171w951w@gsuite.kobe-u.ac.jp \\ \and
     Yusei Nagao, Osaka Institute of Tech., m1m22r23@oit.ac.jp \\ \and
     Tatsuki Nishimura, Osaka Univ., hbvcg00@gmail.com \\ \and
+    Kento Hirogaki, Gifu Univ., hkt8g2r6kin@gmail.com \\ \and
     Shunya Tanaka, , syun111@gmail.com \\ \and
     Tatsuya Sanada, TXP Medical Co. Ltd., tatsuya.sh.tiny@gmail.com \\ \and
     Masaya Kataoka, TIER IV inc . , ms.kataoka@gmail.com,
@@ -387,7 +388,7 @@ Our software is highly modularized, so some of our team members use our stacks i
         }
     \end{center}
     \caption{Autonomous mobility with our navigation stack (rviz)}
-    \label{fig:whill}
+    \label{fig:whill_rviz}
 \end{figure}
 
 All of our software is managed by ansible and can be deployed on real machines without the need for human intervention.
@@ -497,7 +498,7 @@ Then, the object area is extracted from the 2D LaserScan. \cite{scan_segmentatio
 The extraction algorithm determines the object area information based on whether the distance between 
 the neighboring LaserScan is less than the threshold value determined adaptively.
 The clustered point cloud is projected on the camera images.
-And we will match the bounding IOU and the object label on the images by Hungarian method.
+And we will match the bounding IOU and the object label on the images by Hungarian method.\cite{hungarian}
 
 \subsection{Simulation}
 
@@ -785,6 +786,9 @@ We hope these significant upgrades will produce positive results in the next com
 
     \bibitem{scan_segmentation}
     \url{https://github.com/OUXT-Polaris/scan_segmentation.git}
+
+    \bibitem{hungarian}
+    H. W. Kuhn, “The hungarian method for the assignment problem,” Navalresearch logistics quarterly, vol.2, no.1-2, pp.83-97, 1955.
 
     \bibitem{embree}
     Attila T,et al. "Embree ray tracing kernels: overview and new features" SIGGRAPH (2016)
