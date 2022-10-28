@@ -145,16 +145,7 @@ Our software contributions are listed as follows.
   \item {\it Software System }:
     We rebuilt the software system from ROS1 to ROS2
   \item {\it Behavior Tree}:
-  We adopted the behavior tree library in ROS2 and built our original behavior tree.
-  Using behavior tree can build WAM-V behaviors like a tree.  
-  we used Groot for smooth development using behavior tree. 
-  For example, in the WAM-V Dynamic Qualifying Task, 
-  we defined a node that navigation and searches the channel markers with lidar-camera fusion object detection system.
-  We need to act the Node two times in the task. So we defined two same nodes and connected them by Sequence node. 
-  The sequence node is defined in the behavior tree.
-  We made other Nodes, for example, move forward node, stop node and rotate around the buoy node.
-  These nodes can realize many behavior patterns required in tasks.
-  
+  We adopted the behavior tree library in ROS2 and built our original behavior tree.  
   \item {\it Simulation Tool Development }:
     We developed LiDAR simulation by using intel ray-tracing OSS "Embree".
   \item {\it CI/CD}:
@@ -169,8 +160,38 @@ Open-Source all our resources not only software but also including CAD models, a
 Our navigation stack is based on ROS2, but we do not use the navigation2 library. We develop our original software.
 Our software is highly modularized, so some of our members use our stacks in other autonomous mobility competitions.
 
+
 \subsection{Camera LiDAR fusion}
 We used YOLOX\cite{YOLOX} for object Detection of task object information such as buoys and docks.
+
+\subsection{Behavior Tree}
+Using behavior tree can build WAM-V behaviors like a tree.  
+we used Groot for smooth development using behavior tree.
+
+\begin{figure}[h]
+  \begin{center}
+    \scalebox{0.24}{
+      \includegraphics{figure/groot.png}
+    }
+  \end{center}
+  \caption{Groot example}
+  \label{fig:Groot}
+\end{figure}
+
+For example, in the WAM-V Dynamic Qualifying Task, 
+we defined a node that navigation and searches channel markers.
+In searching channel markers behavior, first, we got the information from the result of lidar-camera fusion object detection system. 
+Information we can get from the system is objects label, probabilities, and bounding boxes.
+And we convert the information we can get from the system into information containing channel markers information 
+we can use in robotx challenge contains such as labels and distance from WAM-V etc.
+After search channel markers, WAM-V starts navigation.
+We need to act the Node two times in the task. So we defined two same nodes and connected them by Sequence node. 
+The sequence node is defined in the behavior tree.
+We made other Nodes, for example, move forward node, stop node and rotate around the buoy node.
+These nodes can realize many behavior patterns required in tasks.
+
+\subsection{Object Detection}
+We used  YOLOX\cite{YOLOX} for object Detection of task object information such as buoys and docks.
 We created annotation data based on images and videos obtained from past RobotX Challenges.
 The result of training and inference is shown in Fig. hoge. 
 The image is part of a video recorded during our challenging navigation in the 2018 RobotX Challenge.\cite{{RobotX2018_video}}
