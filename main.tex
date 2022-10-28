@@ -239,6 +239,13 @@ All of these deliverables are also open-source software.
 We also developed GitHub Actions to configure GitHub Actions to unify CI procedures for multiple repositories and
 built a system to synchronize CI procedures at all times via bot accounts. \cite{wam-v-tan_bot}
 
+GitHub Actions is also used when deploying to the actual machine.
+GitHub Actions has a function called Self-Hosted Runner, which allows you to remotely execute any command using your own computer.
+Using this function, after the CI of the ROS2 package is completed, 
+a configuration file with all commit hashes fixed is created and deployed to the actual device
+using Github Actions/ansible based on that configuration file.
+This allows our team to deploy the verified and up-to-date source code to the machine at the push of a button.
+
 \section{Conclusion}
 In this paper, OUXT-Polaris reported the development of the autonomous navigation system for the 2022 RobotX Challenge.
 Based on the results of the 2018 RobotX Challenge, OUXT-Polaris rebuilt the system and
