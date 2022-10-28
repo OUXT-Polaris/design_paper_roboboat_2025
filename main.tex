@@ -223,7 +223,7 @@ Our software contributions are listed as follows.
     We rebuilt the software system from ROS1 to ROS2
   \item {\it Behavior Tree}:
   We adopted the behavior tree library in ROS2 and built our original behavior tree.  
-  \item {\it Camera LiDAR fusion}:
+  \item {\it Camera LiDAR object detection}:
     We are developing a lidar-camera fusion object detection system for this project.
   \item {\it Simulation Tool Development }:
     We developed LiDAR simulation by using intel ray-tracing OSS "Embree".
@@ -241,13 +241,9 @@ All of our software is managed by ansible and can be deployed on real machines w
 It is open source, including the setup tools \cite{ouxt_automation} and it's documentation \cite{documentation_software},
 so anyone in the world can try out the OUXT-Polaris navigation stack.
 
-
-\subsection{Camera LiDAR fusion}
-We used YOLOX\cite{YOLOX} for object Detection of task object information such as buoys and docks.
-
 \subsection{Behavior Tree}
 Using behavior tree can build WAM-V behaviors like a tree.  
-we used Groot for smooth development using behavior tree.
+We use Groot \ref{fig:Groot}, GUI tools for designing behavior tree for smooth development.
 
 \begin{figure}[htbp]
   \begin{center}
@@ -285,8 +281,32 @@ These nodes can realize many behavior patterns required in tasks.
 We used  YOLOX\cite{YOLOX} for object Detection of task object information such as buoys and docks.
 We created annotation data based on images and videos obtained from past RobotX Challenges.
 We open our annotation data for speeding up future development for Maritime RobotX. \cite{dataset_annotations}
-The result of training and inference is shown in Fig. hoge. 
+The result of training and inference is shown in Fig.\ref{fig:inference}.
+
+\begin{figure}[h]
+    \begin{center}
+      \scalebox{0.13}{
+      \includegraphics{figure/inference.png}
+    }
+  \end{center}
+  \caption{inference}
+  \label{fig:inference}
+\end{figure}
+
 The image is part of a video recorded during our challenging navigation in the 2018 RobotX Challenge.\cite{RobotX2018_video}
+This model is based on the YOLOX-S network and converted into a tensorrt model.
+So, we can run an object detection model of more than 10 Hz in Jetson nano.
+
+\begin{figure}[h]
+    \begin{center}
+      \scalebox{0.2}{
+      \includegraphics{figure/jetson_nano.jpg}
+    }
+  \end{center}
+  \caption{Jetson Nano}
+  \label{fig:jetson_nano}
+\end{figure}
+
 \indent The point cloud from LiDAR preprocesses before fusion the camera image and the LiDAR point cloud.
 First, The point cloud from the LiDAR is filtered to remove outliers.
 Next, the filtered point cloud is downsampled to a 2D Laser Scan.
@@ -316,10 +336,14 @@ When a pull request is issued for any of the packages we manage, a build test is
 If the build test fails, the pull request cannot be merged.
 Failed build tests are notified to the OUXT-Polaris Slack so that members know immediately if a failure has occurred.
 Whole architecture of CI/CD pipeline shown in Fig.\ref{fig:ci_cd_pipeline}.
+The robot also consists of a single-board computer with an arm CPU as well as a CPU with x86-based architecture,
+and a microcontroller with an arm CPU and mbed OS.
+The infrastructure supports all of these architectures and 
+can test all software from deep-learning recognition systems to low-layer control systems.
 
 \begin{figure}[htbp]
     \begin{center}
-      \scalebox{0.18}{
+      \scalebox{0.36}{
       \includegraphics{figure/ci_cd_pipeline.png}
     }
   \end{center}
@@ -329,7 +353,7 @@ Whole architecture of CI/CD pipeline shown in Fig.\ref{fig:ci_cd_pipeline}.
 
 \begin{figure}[htbp]
     \begin{center}
-      \scalebox{0.18}{
+      \scalebox{0.36}{
       \includegraphics{figure/dashboard.png}
     }
   \end{center}
@@ -352,12 +376,55 @@ Using this function, after the CI of the ROS2 package is completed,
 a configuration file with all commit hashes fixed is created and deployed to the actual device
 using Github Actions/ansible based on that configuration file.
 This allows our team to deploy the verified and up-to-date source code to the machine at the push of a button.
-\subsection{A Mock Server}
+
+In addition, machine learning is a task that requires a variety of complicated labor and a machine with a high-performance GPU.
+However, most tasks are routine and human intervention is not productive.
+To give some concrete examples, the following tasks can be automated.
+
+\begin{figure}[htbp]
+    \begin{center}
+      \scalebox{0.1}{
+      \includegraphics{figure/tensorboard.png}
+    }
+  \end{center}
+  \caption{training result in tensorbord.dev}
+  \label{fig:tensorbord}
+\end{figure}
+
+\begin{figure}[htbp]
+    \begin{center}
+      \scalebox{0.23}{
+      \includegraphics{figure/inference_bot.png}
+    }
+  \end{center}
+  \caption{inference bot}
+  \label{fig:inference_bot}
+\end{figure}
+
+\begin{itemize}
+    \item {\it Conversion of dataset formats }:
+        We use labelme for annotation tools, but YOLOX use coco format for learning.
+    \item {\it Performing training }:
+        Virtualize the environment with nvidia docker and run scripts for learning on it
+    \item {\it Visualization and versioning of training results }:
+        We can visualize inference result via Twitter bot(Fig.\ref{fig:inference_bot}) and tensorbord.dev(Fig.\ref{fig:tensorbord})
+    \item {\it Model Conversion }:
+        Need to convert PyTorch training results into a tensorrt model for faster inference.
+\end{itemize}
+
+All tasks are executed using the Self-hosted runner in GitHub actions, 
+which automatically executes the training when it detects additional events in the machine learning data set.
+Training takes about 30 minutes when we train YOLOX-S model.
+Future work includes building a mechanism to automatically deploy the obtained learning results to 
+the actual machine and Neural Architecture Search using black-box optimization.
+
+\subsection{Communication with Technical Director Server}
 We must report the vehicle's status as the Autonomous Maritime System heartbeat to a Technical Director server via a TCP connection. 
 Our team usually tests navigation systems using a simulation environment, 
 so we should check the heartbeat sentence on the simulation loop. 
-To achieve it, we built a simple mock server. 
+To achieve it, we built a simple mock server\cite{robotx_communication}.
 It displays received NMEA-like sentences from a simulation via a TCP connection.
+We also implemented a ROS2 node that collects information about the aircraft and sends heartbeats.
 
 \subsection{WAM-V Controller}
 The WAM-V control system adopted the ros2\_control\cite{ros2_control,wamv_control}.
@@ -484,17 +551,20 @@ We hope these significant upgrades will produce positive results in the next com
     \bibitem{RobotX2018_video}
     \url{https://www.youtube.com/watch?v=MqDBxzS4uy4}
 
-    \bibitem{dataset_annotations}
+    \bibitem{scan_segmentation}
     \url{https://github.com/OUXT-Polaris/scan_segmentation.git}
 
     \bibitem{wam-v-tan_bot}
     \url{https://github.com/wam-v-tan}
 
-  \bibitem{ros2_control}
-  \url{https://github.com/ros-controls/ros2_control}
+    \bibitem{robotx_communication}
+    \url{https://github.com/OUXT-Polaris/robotx_communication}
 
-  \bibitem{wamv_control}
-  \url{https://github.com/OUXT-Polaris/wamv_control}
+    \bibitem{ros2_control}
+    \url{https://github.com/ros-controls/ros2_control}
+
+    \bibitem{wamv_control}
+    \url{https://github.com/OUXT-Polaris/wamv_control}
 
 \end{thebibliography}
 
