@@ -67,25 +67,55 @@ In this competition, we have a chance to develop a system to get over the wild e
 for the robots on the ocean. Therefore, we are participating in the Maritime RobotX Challenge.
 
 \section{Overview of vessel system}
-First, we describe the architecture of the navigation system. As you can see Fig. \ref{fig:arch_nav},
-the position and the velocity of WAM-V are estimated using the 6DoF Extended Kalman Filter \cite{robotx_ekf}
-from the data of the GNSS and IMU sensors.
-The obstacles and task objects are recognized from lidar and camera data. Based on the self-position and the task objects, 
-WAM-V decides where to go and what to do next.
-After getting the target position, the path is created by the path planner,
-and the target velocity that WAM-V can trace the way is calculated. 
-Finally, in the servo and thruster controllers,
-the servo motor direction and the thruster revolution to achieve the target velocity are calculated based on the vessel motion model.
-
 \begin{figure}[htbp]
-    \begin{center}
-        \scalebox{0.8}{
-            \includegraphics{figure/proposed_sw_system.jpg}
-        }
-    \end{center}
-    \caption{the proposed software system}
-    \label{fig:pss}
+  \begin{center}
+    \scalebox{0.22}{
+      \includegraphics{figure/arch_nav.eps}
+    }
+  \end{center}
+  \caption{the archtecture of navigation system}
+  \label{fig:arch_nav}
 \end{figure}
+\begin{figure}[htbp]
+  \begin{center}
+      \scalebox{0.9}{
+          \includegraphics{figure/proposed_sw_system.jpg}
+      }
+  \end{center}
+  \caption{the proposed software system}
+  \label{fig:pss}
+\end{figure}
+
+As shown in  Figs. \ref{fig:arch_nav},\ref{fig:pss},
+we designed the architecture of the vessel navigation system. 
+Our vessel navigation systems are composed of localization, perception, behavior, planning, and control.
+Our localization, behavior, and planning methods are based on classical methods, such as "Extended Kalman Filter", "Behavior Tree", "Cubic Hermite Spline" and "Velocity Control based on WAM-V Dynamics Model"
+Our perception methods are based on learning methods, such as "YOLOX".
+We beliefly describe the developed vessel navigation system as follows.
+
+\begin{enumerate}
+  \item {\it Localization}: 
+  The position and the velocity of WAM-V are estimated
+  using the 6DoF Extended Kalman Filter \cite{robotx_ekf} from the data of the GNSS and IMU sensors.
+    
+  \item {\it Perception}: 
+  The obstacles and task objects are recognized from lidar and camera data.
+  We used YOLOX for object Detection of task object information such as buoys and docks.
+
+  \item {\it Behavior}: 
+  Using behavior tree can build WAM-V behaviors like a tree. 
+  We use Groot \ref{fig:Groot}, GUI tools for designing behavior tree for smooth development.
+  
+  \item {\it Planning}: 
+  Path planning generates obstacle-avoidable paths from sensors and WAM-V information in real-time.
+  % The path planning method generates obstacle-avoidable path considering ,
+  % and the target velocity that WAM-V can trace the way is calculated. 
+
+  \item {\it Control}: 
+  In the servo and thruster controllers,
+  the servo motor direction and the thruster revolution
+  to achieve the target velocity are calculated based on the vessel motion model.
+\end{enumerate}
 
 \section{Hardware Developments}
 
@@ -204,16 +234,6 @@ The concepts of MINI-V are follows:
   \item open source software and hardware,
   \item high compatibility between WAM-V and MINI-V.
 \end{enumerate}
-
-\begin{figure}[htbp]
-  \begin{center}
-    \scalebox{0.2}{
-      \includegraphics{figure/arch_nav.eps}
-    }
-  \end{center}
-  \caption{the archtecture of navigation system}
-  \label{fig:arch_nav}
-\end{figure}
 
 \begin{figure}[htbp]
     \begin{center}
