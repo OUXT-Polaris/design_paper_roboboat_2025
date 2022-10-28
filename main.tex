@@ -20,7 +20,8 @@
     Akihisa Nagata, Kansai Univ. , k065604@kansai-u.ac.jp \\ \and
     Masato Kobayashi, Kobe Univ. , 171w951w@gsuite.kobe-u.ac.jp \\ \and
     Shunya Tanaka, , syun111@gmail.com \\ \and
-    Masaya Kataoka, TEIR IV inc . , ms.kataoka@gmail.com,
+    Masaya Kataoka, TEIR IV inc . , ms.kataoka@gmail.com, \\ \and
+    Kyoma Arai, Tokai Univ. , 2cemm007@mail.u-tokai.ac.jp,
 }
 
 % The paper headers
@@ -57,6 +58,41 @@ The environment such as weather, temperature, or underwater around robots causes
 There are each challenging problems and They are also interesting for us.  
 In this competition, we have a chance to develop a system to get over the wild environment 
 for the robots on the ocean. Therefore, we are participating in the Maritime RobotX Challenge.
+
+\section{Over All Improved System}
+\section{Hardware Developments}
+\section{Software Developments}
+\subsection{ROS2-based Autonomous Navigation Stack}
+In “Maritime RobotX Challenge 2018”, we used Robot Operating System 1(ROS1) for developing software.
+However, the development of ROS1 was finished with python2 end of life.
+Therefore, we adopted the next generation of ROS called “ROS2”.
+As shown in Fig. 1, our ROS2-based simulation and software system was already developed.
+Our software contributions are listed as follows.
+
+\begin{itemize}
+  \item {\it Software System }:
+    We rebuilt the software system from ROS1 to ROS2
+  \item {\it Behavior Tree}:
+    We adopted the behavior tree library in ROS2 and built our original behavior tree.
+  \item {\it Simulation Tool Development }:
+    We developed LiDAR simulation by using intel ray-tracing OSS "Embree".
+  \item {\it CI/CD}:
+    CI/CD systems are developed on the GitHub Actions Platform.
+  \item {\it Object Detection}:
+    We are developing a lidar-camera fusion object detection system for this project.
+\end{itemize}
+We published all codes in GitHub to give feedback knowledge to the ROS community and 
+Open-Source all our resources not only software but also including CAD models, and circuit data.
+
+\subsection{Software System Architecture}
+Our navigation stack is based on ROS2, but we do not use the navigation2 library. We develop our original software.
+Our software is highly modularized, so some of our members use our stacks in other autonomous mobility competitions.
+
+\subsection{Object Detection}
+We used  YOLOX\cite{YOLOX} for object Detection of task object information such as buoys and docks.
+We created annotation data based on images and videos obtained from past RobotX Challenges.
+The result of training and inference is shown in Fig. hoge. 
+The image is part of a video recorded during our challenging navigation in the 2018 RobotX Challenge.\cite{{RobotX2018_video}}
 
 \section{Conclusion}
 XXXXXX
