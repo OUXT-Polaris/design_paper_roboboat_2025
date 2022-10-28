@@ -145,7 +145,7 @@ We have future tasks to create a little bigger vessel to have compatible hardwar
 \subsection{ROS2-based Autonomous Navigation Stack}
 In “Maritime RobotX Challenge 2018”, we used Robot Operating System 1(ROS1) for developing software.
 However, the development of ROS1 was finished with python2 end of life.
-Therefore, we adopted the next generation of ROS called “ROS2”.
+Therefore, we adopted the next generation of ROS called “ROS2”. \cite{ROS2_paper}
 As shown in Fig. 1, our ROS2-based simulation and software system was already developed.
 Our software contributions are listed as follows.
 
@@ -167,6 +167,8 @@ Open-Source all our resources not only software but also including CAD models, a
 \subsection{Software System Architecture}
 Our navigation stack is based on ROS2, but we do not use the navigation2 library. We develop our original software.
 Our software is highly modularized, so some of our members use our stacks in other autonomous mobility competitions.
+All of our software is managed by ansible and can be deployed on real machines without the need for human intervention.
+It is open source, including the setup tools \cite{ouxt_automation}, so anyone in the world can try out the OUXT-Polaris navigation stack.
 
 \subsection{Camera LiDAR fusion}
 We used YOLOX\cite{YOLOX} for object Detection of task object information such as buoys and docks.
@@ -193,12 +195,17 @@ We hope these significant upgrades will produce positive results in the next com
 % \section*{Acknowledgments}
 \begin{thebibliography}{1}
 \bibliographystyle{IEEEtran}
+    \bibitem{ROS2_paper}
+    Steven Macenski, et al. "Robot Operating System 2: Design, architecture, and uses in the wild." Science Robotics (2022)
 
-  \bibitem{YOLOX}
-  Ge, Zheng, et al. "Yolox: Exceeding yolo series in 2021." arXiv preprint arXiv:2107.08430 (2021).
+    \bibitem{ouxt_automation}
+    \url{https://github.com/OUXT-Polaris/ouxt_automation.git}
 
-  \bibitem{RobotX2018_video}
-  \url{https://www.youtube.com/watch?v=MqDBxzS4uy4}
+    \bibitem{YOLOX}
+    Ge, Zheng, et al. "Yolox: Exceeding yolo series in 2021." arXiv preprint arXiv:2107.08430 (2021).
+
+    \bibitem{RobotX2018_video}
+    \url{https://www.youtube.com/watch?v=MqDBxzS4uy4}
 
 \end{thebibliography}
 
