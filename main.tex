@@ -120,6 +120,71 @@ The hollow shaft is held at two points by angular bearings.
   \label{fig:azimuth_design}
 \end{figure}
 
+\subsection{Sensor Arrangement}
+
+LiDAR and a visible light camera are used for environmental awareness.
+Their arrangement is shown in the Fig. \ref{fig:sensor_arrangement}.
+
+\begin{figure}[htbp]
+  \begin{center}
+    \scalebox{0.2}{
+      \includegraphics{figure/sensor_arrangement.png}
+    }
+  \end{center}
+  \caption{Sensor Arrangement}
+  \label{fig:sensor_arrangement}
+\end{figure}
+
+In total, 6 cameras and 4 LiDARs are used.
+Different LiDARs are used for the front and rear views and for the left and right views.
+The VLP-16 from Velodyne Lidar is used for the front/rear view to provide a wide range of vision, mainly in the direction of boat travel, and the MID-70 from Livox is selected for the left/right view to see the docking bay near the hull in the docking task.
+For the cameras, a module with an IMX-219 image sensor and a lens with a 120-degree diagonal field of view was used.
+This allows the acquisition of point cloud information and visible light images covering 360 degrees around the boat.
+
+\subsection{The Perception Array and the Perception Camera}
+
+To perform point cloud fusion using a visible light camera and LiDAR, it is necessary to accurately calibrate the relative positions of the sensors.
+Therefore, once the sensors are assembled on the hull, they cannot be easily removed for testing on land.
+
+To solve this problem, we have developed a sensor unit that consists of a LiDAR and two cameras fixed to a rigid frame and can be mounted on or carried by various robots while maintaining the accuracy of the relative positioning between the sensors.
+We call it a perception array.
+
+The foreground and background views of the designed perception array are shown in Fig. \ref{fig:perception_array_front} and Fig. \ref{fig:perception_array_back}, respectively.
+
+\begin{figure}[htbp]
+  \begin{center}
+    \scalebox{0.2}{
+      \includegraphics{figure/perception_array_front.png}
+    }
+  \end{center}
+  \caption{Front view of the Perception Array}
+  \label{fig:perception_array_front}
+\end{figure}
+
+\begin{figure}[htbp]
+  \begin{center}
+    \scalebox{0.2}{
+      \includegraphics{figure/perception_array_back.png}
+    }
+  \end{center}
+  \caption{Rear view of the Perception Array}
+  \label{fig:perception_array_back}
+\end{figure}
+
+The cameras are mounted on the left and right sides, and the LiDAR is mounted upside down at the bottom.
+The box in the center contains the power supply function and the switching hub.
+This configuration is shown in the Fig. \ref{fig:perception_aray_diagram}.
+
+\begin{figure}[htbp]
+  \begin{center}
+    \scalebox{0.2}{
+      \includegraphics{figure/perception_aray_diagram.png}
+    }
+  \end{center}
+  \caption{Diagram of the Perception Array}
+  \label{fig:perception_aray_diagram}
+\end{figure}
+
 
 \subsection{MINI-V in the COVID-19}
 MINI-V(minitua vessel) was created in order to test the software easily in the Covid-19. Over the past several years, 
