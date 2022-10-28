@@ -9,6 +9,7 @@
 \usepackage{url}
 \usepackage{verbatim}
 \usepackage{graphicx}
+\usepackage{here}
 
 \hyphenation{op-tical net-works semi-conduc-tor IEEE-Xplore}
 
@@ -23,7 +24,7 @@
     Yusei Nagao, Osaka Institute of Tech., m1m22r23@oit.ac.jp \\ \and
     Tatsuki Nishimura, Osaka Univ., hbvcg00@gmail.com \\ \and
     Shunya Tanaka, , syun111@gmail.com \\ \and
-    Tatsuya Sanada, ,tatsuya.sh.tiny@gmail.com \\ \and
+    Tatsuya Sanada, TXP Medical Co. Ltd., tatsuya.sh.tiny@gmail.com \\ \and
     Masaya Kataoka, TIER IV inc . , ms.kataoka@gmail.com,
 }
 
@@ -42,7 +43,7 @@ OUXT-Polaris has been developing an autonomous navigation system by participatin
 Maritime RobotX Challenge 2014, 2016, and 2018. 
 In this paper, we describe the improvement of the previous vessel system. 
 We also indicate the advantage of the improved design.
-Moreover, we describe the developing method for Covid-19 and the 
+Moreover, we describe the developing method under Covid-19 using simulation / miniture-size hardware and the 
 feature components for the next RobotX Challenge.
 \end{abstract}
 
@@ -65,27 +66,58 @@ Moreover, on the land, the position of the target objects and obstacles is obtai
 waves disturbe to get the target positions. In that case, the robots have to fusion multiple data such as cameras and Lidars.
 In this competition, we have a chance to develop a system to get over the wild environment 
 for the robots on the ocean. Therefore, we are participating in the Maritime RobotX Challenge.
+As shown in  Figs. \ref{fig:arch_nav}, and \ref{fig:pss},
+we designed the architecture of the vessel navigation system. 
+Our vessel navigation systems are composed of localization, perception, behavior, planning, and control.
+Our localization, behavior, and planning methods are based on classical methods,
+such as "Extended Kalman Filter", "Behavior Tree", "Cubic Hermite Spline" and "Velocity Control based on WAM-V Dynamics Model"
+Our perception methods are based on learning methods, such as "YOLOX".
+We beliefly describe the developed vessel navigation system as follows.
 
 \section{Overview of vessel system}
-First, we describe the architecture of the navigation system. As you can see Fig. \ref{fig:arch_nav},
-the position and the velocity of WAM-V are estimated using the 6DoF Extended Kalman Filter \cite{robotx_ekf}
-from the data of the GNSS and IMU sensors.
-The obstacles and task objects are recognized from lidar and camera data. Based on the self-position and the task objects, 
-WAM-V decides where to go and what to do next.
-After getting the target position, the path is created by the path planner,
-and the target velocity that WAM-V can trace the way is calculated. 
-Finally, in the servo and thruster controllers,
-the servo motor direction and the thruster revolution to achieve the target velocity are calculated based on the vessel motion model.
-
-\begin{figure}[htbp]
-    \begin{center}
-        \scalebox{0.8}{
-            \includegraphics{figure/proposed_sw_system.jpg}
-        }
-    \end{center}
-    \caption{the proposed software system}
-    \label{fig:pss}
+\begin{figure}[H]
+  \begin{center}
+    \scalebox{0.22}{
+      \includegraphics{figure/arch_nav.eps}
+    }
+  \end{center}
+  \caption{the archtecture of navigation system}
+  \label{fig:arch_nav}
 \end{figure}
+
+\begin{figure}[H]
+  \begin{center}
+      \scalebox{0.9}{
+          \includegraphics{figure/proposed_sw_system.jpg}
+      }
+  \end{center}
+  \caption{the proposed software system}
+  \label{fig:pss}
+\end{figure}
+
+\begin{enumerate}
+  \item {\it Localization}: 
+  The position and the velocity of WAM-V are estimated
+  using the 6DoF Extended Kalman Filter \cite{robotx_ekf} from the data of the GNSS and IMU sensors.
+    
+  \item {\it Perception}: 
+  The obstacles and task objects are recognized from lidar and camera data.
+  We used YOLOX for object Detection of task object information such as buoys and docks.
+
+  \item {\it Behavior}: 
+  Using behavior tree can build WAM-V behaviors like a tree. 
+  We use Groot \ref{fig:Groot}, GUI tools for designing behavior tree for smooth development.
+  
+  \item {\it Planning}: 
+  Path planning generates obstacle-avoidable paths from sensors and WAM-V information in real-time.
+  % The path planning method generates obstacle-avoidable path considering ,
+  % and the target velocity that WAM-V can trace the way is calculated. 
+
+  \item {\it Control}: 
+  In the servo and thruster controllers,
+  the servo motor direction and the thruster revolution
+  to achieve the target velocity are calculated based on the vessel motion model.
+\end{enumerate}
 
 \section{Hardware Developments}
 
@@ -110,7 +142,7 @@ The collet is pushed axially by a screw into an aluminum hollow shaft with a wed
 The azimuth mechanism is realized by transmitting the rotational force from the servo motor (XM540-W270, Dynamixel) to the hollow shaft by spur gears.
 The hollow shaft is held at two points by angular bearings.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
   \begin{center}
     \scalebox{0.2}{
       \includegraphics{figure/azimuth_thruster.png}
@@ -118,6 +150,73 @@ The hollow shaft is held at two points by angular bearings.
   \end{center}
   \caption{The design of azimuth thruster}
   \label{fig:azimuth_design}
+\end{figure}
+
+\subsection{Sensor Arrangement}
+
+LiDAR and a visible light camera are used for environmental awareness.
+Their arrangement is shown in the Fig. \ref{fig:sensor_arrangement}.
+
+\begin{figure}[H]
+  \begin{center}
+    \scalebox{0.2}{
+      \includegraphics{figure/sensor_arrangement.png}
+    }
+  \end{center}
+  \caption{Sensor Arrangement}
+  \label{fig:sensor_arrangement}
+\end{figure}
+
+In total, 6 cameras and 4 LiDARs are used.
+Different LiDARs are used for the front and rear views and for the left and right views.
+The VLP-16 from Velodyne Lidar is used for the front/rear view to provide a wide range of vision, mainly in the direction of boat travel, and the MID-70 from Livox is selected for the left/right view to see the docking bay near the hull in the docking task.
+For the cameras, a module with an IMX-219 image sensor and a lens with a 120-degree diagonal field of view was used.
+This allows the acquisition of point cloud information and visible light images covering 360 degrees around the boat.
+
+\subsection{The Perception Array and the Perception Camera}
+
+To perform point cloud fusion using a visible light camera and LiDAR, it is necessary to accurately calibrate the relative positions of the sensors.
+Therefore, once the sensors are assembled on the hull, they cannot be easily removed for testing on land.
+
+To solve this problem, we have developed a sensor unit that consists of a LiDAR and two cameras fixed to a rigid frame and can be mounted on or carried by various robots while maintaining the accuracy of the relative positioning between the sensors.
+We call it a perception array.
+
+The foreground and background views of the designed perception array are shown in Fig. \ref{fig:perception_array_front}
+
+\begin{figure}[H]
+  \begin{center}
+    \scalebox{0.1}{
+      \includegraphics{figure/perception_array_front.png}
+    }
+  \end{center}
+  \caption{Front view of the Perception Array}
+  \label{fig:perception_array_front}
+\end{figure}
+
+and Fig. \ref{fig:perception_array_back}, respectively.
+
+\begin{figure}[H]
+  \begin{center}
+    \scalebox{0.1}{
+      \includegraphics{figure/perception_array_back.png}
+    }
+  \end{center}
+  \caption{Rear view of the Perception Array}
+  \label{fig:perception_array_back}
+\end{figure}
+
+The cameras are mounted on the left and right sides, and the LiDAR is mounted upside down at the bottom.
+The box in the center contains the power supply function and the switching hub.
+This configuration is shown in the Fig. \ref{fig:perception_aray_diagram}.
+
+\begin{figure}[H]
+  \begin{center}
+    \scalebox{0.2}{
+      \includegraphics{figure/perception_aray_diagram.png}
+    }
+  \end{center}
+  \caption{Diagram of the Perception Array}
+  \label{fig:perception_aray_diagram}
 \end{figure}
 
 
@@ -140,35 +239,15 @@ The concepts of MINI-V are follows:
   \item high compatibility between WAM-V and MINI-V.
 \end{enumerate}
 
-\begin{figure}[htbp]
-  \begin{center}
-    \scalebox{0.2}{
-      \includegraphics{figure/arch_nav.eps}
-    }
-  \end{center}
-  \caption{the archtecture of navigation system}
-  \label{fig:arch_nav}
-\end{figure}
-
-\begin{figure}[htbp]
+\begin{figure}[H]
     \begin{center}
-      \scalebox{0.18}{
-      \includegraphics{figure/mini_v_component.eps}
+    \scalebox{0.22}{
+        \includegraphics{figure/mini_v_component.png}
     }
-  \end{center}
-  \caption{Hardware components of MINI-V}
-  \label{fig:mini_v_component}
-\end{figure}
-
-\begin{figure}[htbp]
-    \begin{center}
-      \scalebox{0.28}{
-        \includegraphics{figure/mini_v_overview.png}
-      }
     \end{center}
-    \caption{Experiment on the Ai river}
-    \label{fig:mini_v_experiment}
-  \end{figure}
+    \caption{Hardware components of MINI-V}
+    \label{fig:mini_v_component}
+\end{figure}
 
 MINI-V is created to be easy to carry, and we can carry them by suitcase like Fig. \ref{fig:mini_v_component}. It is so small that we can
 float and test on the buthtab.
@@ -176,6 +255,16 @@ It is also assembled simply. We develop this vessel on open source. So, other pe
 we expect the high compatibility between WAM-V and MINI-V, and it will make it easy to migrate developed software on MINI-V toWAM-V. However, 
 MINI-V have not had complete compatibility yet.
 We have future tasks to create a little bigger vessel to have compatible hardware and software such as batteries and sensors, and so on.
+  
+\begin{figure}[H]
+    \begin{center}
+    \scalebox{0.25}{
+        \includegraphics{figure/mini_v_overview.png}
+    }
+    \end{center}
+    \caption{Experiment on the Ai river}
+    \label{fig:mini_v_experiment}
+\end{figure}
 
 \subsection{the prototype of the multicopter}
 In the RobotX 2022, the tasks about multicopter are add on the competition. The drone needs to be automated and pick up the task objects.
@@ -190,20 +279,20 @@ Moreover, the sensor such as cameras to recognize the task objects are needed.
 There are many considerations such as the roter-size, motor power, the size of body, and so on.
 We are going to develop the automated navigation system for drone in next years.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
   \begin{center}
-    \scalebox{0.2}{
-      \includegraphics{figure/drone.eps}
+    \scalebox{0.3}{
+      \includegraphics{figure/drone.png}
     }
   \end{center}
   \caption{the componets of the drone}
   \label{fig:drone}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
   \begin{center}
     \scalebox{0.4}{
-      \includegraphics{figure/drone_posi.eps}
+      \includegraphics{figure/drone_posi.png}
     }
   \end{center}
   \caption{the estimated drone position and the track}
@@ -269,7 +358,29 @@ but also CAD models, and circuit data. \cite{documentation_hardware}
 
 \subsection{Software System Architecture}
 Our navigation stack is based on ROS2, but we do not use the navigation2 library. We develop our original software.
-Our software is highly modularized, so some of our members use our stacks in other autonomous mobility competitions.
+Our software is highly modularized, so some of our team members use our stacks in other autonomous mobility competitions. 
+(Fig.\ref{fig:whill},Fig. \ref{fig:whill_rviz})
+
+\begin{figure}[H]
+    \begin{center}
+        \scalebox{0.12}{
+            \includegraphics{figure/whill.png}
+        }
+    \end{center}
+    \caption{Autonomous mobility with our navigation stack}
+    \label{fig:whill}
+\end{figure}
+
+\begin{figure}[H]
+    \begin{center}
+        \scalebox{0.12}{
+            \includegraphics{figure/whill_rviz.png}
+        }
+    \end{center}
+    \caption{Autonomous mobility with our navigation stack (rviz)}
+    \label{fig:whill}
+\end{figure}
+
 All of our software is managed by ansible and can be deployed on real machines without the need for human intervention.
 It is open source, including the setup tools \cite{ouxt_automation} and it's documentation \cite{documentation_software},
 so anyone in the world can try out the OUXT-Polaris navigation stack.
@@ -278,7 +389,7 @@ so anyone in the world can try out the OUXT-Polaris navigation stack.
 Using behavior tree can build WAM-V behaviors like a tree.  
 We use Groot \ref{fig:Groot}, GUI tools for designing behavior tree for smooth development.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
   \begin{center}
     \scalebox{0.24}{
       \includegraphics{figure/groot.png}
@@ -300,7 +411,7 @@ The sequence node is defined in the behavior tree.
 We made other Nodes, for example, move forward node, stop node and rotate around the buoy node.
 These nodes can realize many behavior patterns required in tasks.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \begin{center}
       \scalebox{0.12}{
         \includegraphics{figure/behavior_tree.png}
@@ -340,7 +451,7 @@ Then, based on the created route and the ship's own self-position, the pure purs
 A contact point between the circle centered on the WAM-V's self-position and the path is created, and the angular velocity and speed up to that contact point is calculated.
 In addition, a straight line is created on the extension of the endpoint to approximate the endpoint so that the endpoint does not run out of control.
 Fig.\ref{fig:the part of planning results} is shown as an the part of planning results by the above path planning module.
-\begin{figure}[htbp]
+\begin{figure}[H]
   \begin{center}
     \scalebox{0.5}{
       \includegraphics{figure/example_planner.png}
@@ -356,7 +467,7 @@ We created annotation data based on images and videos obtained from past RobotX 
 We open our annotation data for speeding up future development for Maritime RobotX. \cite{dataset_annotations}
 The result of training and inference is shown in Fig.\ref{fig:inference}.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \begin{center}
       \scalebox{0.13}{
       \includegraphics{figure/inference.png}
@@ -378,6 +489,27 @@ The extraction algorithm determines the object area information based on whether
 the neighboring LaserScan is less than the threshold value determined adaptively.
 The clustered point cloud is projected on the camera images.
 And we will match the bounding IOU and the object label on the images by Hungarian method.
+
+\subsection{Simulation}
+
+WAM-V has a car-sized hull, and the setup alone consumes an entire day to conduct the experiment.
+The development of a simulator is essential to speed up the development process.
+Therefore, we developed a simulator called navi\_sim.
+The reason we did not use vrx is that vrx is not yet compatible with ROS2.
+navi\_sim utilizes Embree \cite{embree}, an open-source ray tracing library developed by Intel, to simulate lidar with fast CPU ray tracing.
+It also provides various other functions such as semantic information output, camera view simulation, and simple ship motion model simulation.
+
+\begin{figure}[H]
+    \begin{center}
+      \scalebox{0.13}{
+      \includegraphics{figure/navi_sim.png}
+    }
+    \end{center}
+    \caption{Running our navigation stack with navi sim}
+    \label{fig:navi_sim}
+\end{figure}
+
+Blue rectangles in Fig. \ref{fig:navi_sim} is camera view simulation, and robot 3D models in \ref{fig:navi_sim} is simulated robot.
 
 \subsection{Infrastructure}
 Our system runs in a complex distributed computing environment that includes microcontrollers,
@@ -404,7 +536,7 @@ and a microcontroller with an arm CPU and mbed OS.
 The infrastructure supports all of these architectures and 
 can test all software from deep-learning recognition systems to low-layer control systems.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \begin{center}
       \scalebox{0.18}{
       \includegraphics{figure/ci_cd_pipeline.png}
@@ -414,7 +546,7 @@ can test all software from deep-learning recognition systems to low-layer contro
   \label{fig:ci_cd_pipeline}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \begin{center}
       \scalebox{0.36}{
       \includegraphics{figure/dashboard.png}
@@ -444,7 +576,7 @@ In addition, machine learning is a task that requires a variety of complicated l
 However, most tasks are routine and human intervention is not productive.
 To give some concrete examples, the following tasks can be automated.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \begin{center}
       \scalebox{0.1}{
       \includegraphics{figure/tensorboard.png}
@@ -569,7 +701,7 @@ We use the same microcontroller for two main purposes.
 The reason for using the same microcontroller is to make it easier to have a spare in case of failure during the competition.
 We considered several types of microcontrollers and finally adopted NUCLEO-F767ZI (Fig.\ref{fig:f767zi}) from STM Corp.
 
-\begin{table}[htbp]
+\begin{table}[H]
     \caption{board selection}
     \label{table:board_selection}
     \centering
@@ -585,7 +717,7 @@ We considered several types of microcontrollers and finally adopted NUCLEO-F767Z
      \end{tabular}
 \end{table}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \begin{center}
       \scalebox{0.23}{
       \includegraphics{figure/f767zi.png}
@@ -644,6 +776,9 @@ We hope these significant upgrades will produce positive results in the next com
 
     \bibitem{scan_segmentation}
     \url{https://github.com/OUXT-Polaris/scan_segmentation.git}
+
+    \bibitem{embree}
+    Attila T,et al. "Embree ray tracing kernels: overview and new features" SIGGRAPH (2016)
 
     \bibitem{wam-v-tan_bot}
     \url{https://github.com/wam-v-tan}
