@@ -245,6 +245,22 @@ Using this function, after the CI of the ROS2 package is completed,
 a configuration file with all commit hashes fixed is created and deployed to the actual device
 using Github Actions/ansible based on that configuration file.
 This allows our team to deploy the verified and up-to-date source code to the machine at the push of a button.
+\subsection{A Mock Server}
+We must report the vehicle's status as the Autonomous Maritime System heartbeat to a Technical Director server via a TCP connection. 
+Our team usually tests navigation systems using a simulation environment, 
+so we should check the heartbeat sentence on the simulation loop. 
+To achieve it, we built a simple mock server. 
+It displays received NMEA-like sentences from a simulation via a TCP connection.
+
+\subsection{Controller}
+The WAM-V control system adopted the ros2\_control\cite{ros2_control,wamv_control}.
+The ros2\_control is a framework for real-time control of robots using ROS2.
+The WAM-V control is are calculated as follows.
+\begin{equation}
+  M \dot\nu = -D(\nu)\nu + F_H(\nu) + \tau
+  \label{eq:control_1}
+\end{equation}
+
 
 \section{Conclusion}
 In this paper, OUXT-Polaris reported the development of the autonomous navigation system for the 2022 RobotX Challenge.
@@ -287,6 +303,12 @@ We hope these significant upgrades will produce positive results in the next com
 
     \bibitem{wam-v-tan_bot}
     \url{https://github.com/wam-v-tan}
+
+  \bibitem{ros2_control}
+  \url{https://github.com/ros-controls/ros2_control}
+
+  \bibitem{wamv_control}
+  \url{https://github.com/OUXT-Polaris/wamv_control}
 
 \end{thebibliography}
 
