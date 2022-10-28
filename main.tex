@@ -82,8 +82,8 @@ the servo motor direction and the thruster revolution to achieve the target velo
             \includegraphics{figure/proposed_sw_system.jpg}
         }
     \end{center}
-    \caption{the archtecture of navigation system}
-    \label{fig:arch_nav}
+    \caption{the proposed software system}
+    \label{fig:pss}
 \end{figure}
 
 \section{Hardware Developments}
@@ -179,11 +179,11 @@ We have future tasks to create a little bigger vessel to have compatible hardwar
 \subsection{the prototype of the multicopter}
 In the RobotX 2022, the tasks about multicopter are add on the competition. The drone needs to be automated and pick up the task objects.
 We created the quadcopter below in Fig.\ref{fig:drone}.
-The flight controller, Pixacer Pro, is introduced to controll the drone. 
+The flight controller, Pixacer Pro\cite{pixracer}, is introduced to controll the drone. 
 In order to get the drone position, it has GNSS sensor on the plane.
 we conduct the test of estimating the self-position of the drone. As you can see Fig.\ref{fig:drone_posi} the drone can estimate
 the self-position With an error of $\pm 0.5 \mathrm{m}$ approxmately.
-At the moment. the drone is manually controled by a pilot but not automated.
+At the moment, the drone is manually controled by a pilot but not automated.
 For automation, we need to add computers such as raspberryPi to send the operation into flight controller. 
 Moreover, the sensor such as cameras to recognize the task objects are needed.
 There are many considerations such as the roter-size, motor power, the size of body, and so on.
@@ -343,6 +343,9 @@ We hope these significant upgrades will produce positive results in the next com
 \bibliographystyle{IEEEtran}
     \bibitem{robotx_ekf}
     \url{https://github.com/OUXT-Polaris/robotx_ekf}
+
+    \bibitem{pixracer}
+    \url{https://mrobotics.io/docs/pixracer-pro/}
 
     \bibitem{ROS2_paper}
     Steven Macenski, et al. "Robot Operating System 2: Design, architecture, and uses in the wild." Science Robotics (2022)
