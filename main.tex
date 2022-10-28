@@ -168,11 +168,87 @@ The image is part of a video recorded during our challenging navigation in the 2
 \subsection{Controller}
 The WAM-V control system adopted the ros2\_control\cite{ros2_control,wamv_control}.
 The ros2\_control is a framework for real-time control of robots using ROS2.
-The WAM-V control is are calculated as follows.
+Our WAM-V controllers are listed as follows.
+\subsubsection{Equation of Motion}
+Our WAM-V equation of motion is calculated as follows.
 \begin{equation}
-  M \dot\nu = -D(\nu)\nu + F_H(\nu) + \tau
+  M \dot\nu = -D(\nu)\nu + \tau
+\end{equation}
+
+\begin{equation}
+  \nu = 
+  \begin{bmatrix}
+  u & v & \omega \\
+  \end{bmatrix}^T\\
   \label{eq:control_1}
 \end{equation}
+
+\begin{equation}
+\tau = 
+\begin{bmatrix}
+f_x & f_y & f_{yaw} \\
+\end{bmatrix}^T\\
+\end{equation}
+
+\begin{equation}
+M = 
+\begin{bmatrix}
+m+m_x &  0 & 0 \\
+0 & m+m_y & 0 \\
+0 & 0 & I_z + J_z
+\end{bmatrix}\\
+\end{equation}
+
+\begin{equation}
+D(\nu) = 
+\begin{bmatrix}
+0 & 0 & -mu \\
+0 & 0 & mv \\
+mu & -mu & 0
+\end{bmatrix}\\
+\end{equation}
+
+where $\nu$ is WAM-V velocity in WAM-V coordinate system.
+$\tau$ is WAM-V coordinate system input.
+$M$ is the mass matrix.
+$m$ is the WAM-V mass.
+$m_x$ and $m_y$ are the added mass of WAM-V in X and Y directions.
+$I_z$ is the WAM-V moment of inertia.
+$J_z$ is the WAM-V added moment of inertia.
+$D(\nu)$ is the WAM-V resistance coefficient matrix.
+
+\subsubsection{Differential Thruster Model}
+\begin{eqnarray}
+\tau &=& 
+\begin{bmatrix}
+f_x \\ 
+f_y \\
+f_{yaw} \\
+\end{bmatrix}\nonumber  \\
+&=&
+\begin{bmatrix}
+\dfrac{1}{2}(F_r + F_l) \\
+0 \\
+\dfrac{w}{2}(F_r - F_l) 
+\end{bmatrix} \\
+\nonumber  
+\end{eqnarray}
+
+where $Fr$ and $F_l$ are propulsion of right and left side thruster.
+$w$ is the distance between right and left thrusters.
+
+
+\subsubsection{Propeller Model}
+\begin{eqnarray}
+T &=& \rho n^2 D^4 K_t(J_s)\\
+K_t(J_s) &=& k_2J_s^2 + k_1J_s + k_0\\
+J_s &=& \dfrac{up}{nD}
+\end{eqnarray}
+
+where,
+$T$, $\rho$, and $D$ are the propeller thrust, fluid density, and propeller radius.
+$k_0$, $k_1$ and $k_2$ are constants values.
+$up$ and $n$ are inflow rate and rotation speed.
 
 
 \section{Conclusion}
