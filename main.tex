@@ -21,6 +21,7 @@
     Kyoma Arai, Tokai Univ. , 2cemm007@mail.u-tokai.ac.jp \\ \and
     Masato Kobayashi, Kobe Univ. , 171w951w@gsuite.kobe-u.ac.jp \\ \and
     Yusei Nagao, Osaka Institute of Tech., m1m22r23@oit.ac.jp \\ \and
+    Yuki Nishimura, Osaka Univ., hbvcg00@gmail.com \\ \and
     Shunya Tanaka, , syun111@gmail.com \\ \and
     Masaya Kataoka, TIER IV inc . , ms.kataoka@gmail.com,
 }
@@ -149,7 +150,7 @@ Our software contributions are listed as follows.
     We developed LiDAR simulation by using intel ray-tracing OSS "Embree".
   \item {\it CI/CD}:
     CI/CD systems are developed on the GitHub Actions Platform.
-  \item {\it Object Detection}:
+  \item {\it Camera LiDAR fusion}:
     We are developing a lidar-camera fusion object detection system for this project.
 \end{itemize}
 We published all codes in GitHub to give feedback knowledge to the ROS community and 
@@ -159,11 +160,25 @@ Open-Source all our resources not only software but also including CAD models, a
 Our navigation stack is based on ROS2, but we do not use the navigation2 library. We develop our original software.
 Our software is highly modularized, so some of our members use our stacks in other autonomous mobility competitions.
 
-\subsection{Object Detection}
-We used  YOLOX\cite{YOLOX} for object Detection of task object information such as buoys and docks.
+\subsection{Camera LiDAR fusion}
+We used YOLOX\cite{YOLOX} for object Detection of task object information such as buoys and docks.
 We created annotation data based on images and videos obtained from past RobotX Challenges.
 The result of training and inference is shown in Fig. hoge. 
 The image is part of a video recorded during our challenging navigation in the 2018 RobotX Challenge.\cite{{RobotX2018_video}}
+\indent The point cloud from LiDAR preprocesses before fusion the camera image and the LiDAR point cloud.
+First, The point cloud from the LiDAR is filtered to remove outliers.
+Next, the filtered point cloud is downsampled to a 2D Laser Scan.
+Then, the object area is extracted from the 2D LaserScan.
+The extraction algorithm determines the object area information based on whether the distance between the neighboring LaserScan is less than the threshold value.
+The clustered point cloud is projected on the camera images.
+And we will match the bounding IOU and the object label on the images by Hungarian method.
+
+\subsection{A Mock Server}
+We must report the vehicle's status as the Autonomous Maritime System heartbeat to a Technical Director server via a TCP connection. 
+Our team usually tests navigation systems using a simulation environment, 
+so we should check the heartbeat sentence on the simulation loop. 
+To achieve it, we built a simple mock server. 
+It displays received NMEA-like sentences from a simulation via a TCP connection.
 
 \subsection{Controller}
 The WAM-V control system adopted the ros2\_control\cite{ros2_control,wamv_control}.
