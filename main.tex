@@ -347,6 +347,15 @@ the neighboring LaserScan is less than the threshold value determined adaptively
 The clustered point cloud is projected on the camera images.
 And we will match the bounding IOU and the object label on the images by Hungarian method.
 
+\subsection{Simulation}
+
+WAM-V has a car-sized hull, and the setup alone consumes an entire day to conduct the experiment.
+The development of a simulator is essential to speed up the development process.
+Therefore, we developed a simulator called navi\_sim.
+The reason we did not use vrx is that vrx is not yet compatible with ROS2.
+navi\_sim utilizes Embree, an open-source ray tracing library developed by Intel, to simulate lidar with fast CPU ray tracing.
+It also provides various other functions such as semantic information output, camera view simulation, and simple ship motion model simulation.
+
 \subsection{Infrastructure}
 Our system runs in a complex distributed computing environment that includes microcontrollers,
 so the configuration file is huge and there are many processes that need to be launched to start the system.
