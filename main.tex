@@ -511,6 +511,44 @@ $T$, $\rho$, and $D$ are the propeller thrust, fluid density, and propeller radi
 $k_0$, $k_1$ and $k_2$ are constants values.
 $up$ and $n$ are inflow rate and rotation speed.
 
+\section{Firmware}
+We use the same microcontroller for two main purposes.
+The reason for using the same microcontroller is to make it easier to have a spare in case of failure during the competition.
+We considered several types of microcontrollers and finally adopted NUCLEO-F767ZI (Fig.\ref{fig:f767zi}) from STM Corp.
+
+\begin{table}[htbp]
+    \caption{board selection}
+    \label{table:board_selection}
+    \centering
+     \begin{tabular}{clll}
+      \hline
+      board & ROS2 Integration & Ethernet & Serial \\
+      \hline \hline
+      NUCLEO-F767ZI & mROS2 & Yes & Yes \\
+      Teensy 4.0 & micor-ROS & No & Yes \\
+      Arduino Due & micro-ROS & No & Yes \\
+      LPC1768 & raw-TCP/IP & Yes & Yes \\
+      \hline
+     \end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+    \begin{center}
+      \scalebox{0.23}{
+      \includegraphics{figure/f767zi.png}
+    }
+  \end{center}
+  \caption{NUCLEO-F767ZI microcontroller}
+  \label{fig:f767zi}
+\end{figure}
+
+The two roles of the microcontroller are to drive the motor and monitor the supply voltage.
+In order to meet the specifications for designing a real-time guaranteed control system for the motor drive,
+we implemented firmware that connects ROS2 through packet communication with the speed control system and UDP communication,
+which were specified in the previous chapter.
+For the other role of monitoring the power supply voltage, a real-time guarantee was not necessary.
+Instead, it was necessary to be able to easily communicate with ROS2 via Pub/Sub, so mROS2, an embedded communication library compatible with ROS2, 
+was adopted to realize communication between the lower layers and higher layers using the ROS2 system.
 
 \section{Conclusion}
 In this paper, OUXT-Polaris reported the development of the autonomous navigation system for the 2022 RobotX Challenge.
