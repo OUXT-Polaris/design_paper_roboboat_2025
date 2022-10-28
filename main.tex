@@ -58,6 +58,25 @@ There are each challenging problems and They are also interesting for us.
 In this competition, we have a chance to develop a system to get over the wild environment 
 for the robots on the ocean. Therefore, we are participating in the Maritime RobotX Challenge.
 
+\section{Overview of vessel system}
+First, we describe the architecture of the navigation system. As you can see \ref{fig:arch_nav},
+the position and the velocity of WAM-V are estimated using the Extended Kalman Filter from the data of the GNSS and IMU sensors.
+The obstacles and task objects are recognized from lidar and camera data. Based on the self-position and the task objects, 
+WAM-V decides where to go and what to do next. After getting the target position, the path is created by the path planner, and the target velocity that WAM-V can trace the way is
+calculated. 
+Finally, in the servo and thruster controllers, the servo motor direction and the thruster revolution to achieve the target velocity are calculated based on the vessel motion model.
+
+\begin{figure}[h]
+  \begin{center}
+    \scalebox{0.24}{
+      \includegraphics{figure/arch_nav.eps}
+    }
+  \end{center}
+  \caption{the archtecture of navigation system}
+  \label{fig:arch_nav}
+\end{figure}
+
+
 \section{Conclusion}
 XXXXXX
 % \section*{Acknowledgments}
