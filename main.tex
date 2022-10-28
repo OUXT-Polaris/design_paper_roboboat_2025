@@ -76,7 +76,7 @@ and the target velocity that WAM-V can trace the way is calculated.
 Finally, in the servo and thruster controllers,
 the servo motor direction and the thruster revolution to achieve the target velocity are calculated based on the vessel motion model.
 
-\begin{figure}[t]
+\begin{figure}[h]
     \begin{center}
         \scalebox{0.8}{
             \includegraphics{figure/proposed_sw_system.jpg}
@@ -107,7 +107,7 @@ The concepts of MINI-V are follows:
   \item high compatibility between WAM-V and MINI-V.
 \end{enumerate}
 
-\begin{figure}[t]
+\begin{figure}[h]
   \begin{center}
     \scalebox{0.2}{
       \includegraphics{figure/arch_nav.eps}
@@ -117,7 +117,7 @@ The concepts of MINI-V are follows:
   \label{fig:arch_nav}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[h]
     \begin{center}
       \scalebox{0.24}{
       \includegraphics{figure/mini_v_component.png}
@@ -127,7 +127,7 @@ The concepts of MINI-V are follows:
   \label{fig:mini_v_component}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[h]
     \begin{center}
       \scalebox{0.28}{
         \includegraphics{figure/mini_v_overview.png}
@@ -180,16 +180,16 @@ We used YOLOX\cite{YOLOX} for object Detection of task object information such a
 
 \subsection{Behavior Tree}
 Using behavior tree can build WAM-V behaviors like a tree.  
-we used Groot for smooth development using behavior tree.
+We used Groot \ref{fig:Groot}, GUI tools for designing behavior tree for smooth development.
 
 \begin{figure}[h]
-  \begin{center}
-    \scalebox{0.24}{
-      \includegraphics{figure/groot.png}
-    }
-  \end{center}
-  \caption{Groot example}
-  \label{fig:Groot}
+    \begin{center}
+      \scalebox{0.24}{
+        \includegraphics{figure/groot.png}
+      }
+    \end{center}
+    \caption{Groot example}
+    \label{fig:Groot}
 \end{figure}
 
 For example, in the WAM-V Dynamic Qualifying Task, 
@@ -208,7 +208,18 @@ These nodes can realize many behavior patterns required in tasks.
 We used  YOLOX\cite{YOLOX} for object Detection of task object information such as buoys and docks.
 We created annotation data based on images and videos obtained from past RobotX Challenges.
 We open our annotation data for speeding up future development for Maritime RobotX. \cite{dataset_annotations}
-The result of training and inference is shown in Fig. hoge. 
+The result of training and inference is shown in Fig.
+
+\begin{figure}[h]
+    \begin{center}
+      \scalebox{0.13}{
+      \includegraphics{figure/inference.png}
+    }
+  \end{center}
+  \caption{inference}
+  \label{fig:inference}
+\end{figure}
+
 The image is part of a video recorded during our challenging navigation in the 2018 RobotX Challenge.\cite{RobotX2018_video}
 \indent The point cloud from LiDAR preprocesses before fusion the camera image and the LiDAR point cloud.
 First, The point cloud from the LiDAR is filtered to remove outliers.
@@ -240,7 +251,7 @@ If the build test fails, the pull request cannot be merged.
 Failed build tests are notified to the OUXT-Polaris Slack so that members know immediately if a failure has occurred.
 Whole architecture of CI/CD pipeline shown in Fig.\ref{fig:ci_cd_pipeline}.
 
-\begin{figure}[t]
+\begin{figure}[h]
     \begin{center}
       \scalebox{0.18}{
       \includegraphics{figure/ci_cd_pipeline.png}
@@ -250,7 +261,7 @@ Whole architecture of CI/CD pipeline shown in Fig.\ref{fig:ci_cd_pipeline}.
   \label{fig:ci_cd_pipeline}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[h]
     \begin{center}
       \scalebox{0.18}{
       \includegraphics{figure/dashboard.png}
@@ -328,7 +339,7 @@ We hope these significant upgrades will produce positive results in the next com
     \bibitem{RobotX2018_video}
     \url{https://www.youtube.com/watch?v=MqDBxzS4uy4}
 
-    \bibitem{dataset_annotations}
+    \bibitem{scan_segmentation}
     \url{https://github.com/OUXT-Polaris/scan_segmentation.git}
 
     \bibitem{wam-v-tan_bot}
