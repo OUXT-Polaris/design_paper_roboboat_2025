@@ -88,6 +88,38 @@ the servo motor direction and the thruster revolution to achieve the target velo
 
 \section{Hardware Developments}
 
+\subsection{Redesign of Azimuth Thruster}
+
+We considered the following three issues when designing the propulsion mechanism.
+
+First, we considered it important for the boat to be able to generate lateral propulsive force to complete the docking task.
+When propulsion units are mounted on the two aft sections of the boat, each propulsion unit must have a degree of freedom in the yaw axis to generate thrust in any direction in the horizontal plane.
+This propulsion system is generally called an azimuth thruster.
+
+Next, the electric outboard motors that are commonly available have a circular cross-section for the mounting shaft, so it is necessary to find a way to fix the shaft tightly.
+
+In addition, the propeller must avoid contact with the seafloor when the vessel needs to navigate in shallow water, such as when launching the boat on the course. Since it is dangerous for a person to enter shallow water and lift the thruster with a tool, a mechanism that can easily raise and lower the thruster was necessary.
+
+To meet these requirements, we designed the mechanism shown in Fig. \ref{fig:azimuth_design}.
+The three functions of gripping, rotating, and elevating are integrated into a single unit.
+
+The gripping function was realized using a PLA plastic collet manufactured by a 3D printer.
+The collet is pushed axially by a screw into an aluminum hollow shaft with a wedge-shaped cross section to enable strong shaft gripping.
+
+The azimuth mechanism is realized by transmitting the rotational force from the servo motor (XM540-W270, Dynamixel) to the hollow shaft by spur gears.
+The hollow shaft is held at two points by angular bearings.
+
+\begin{figure}[htbp]
+  \begin{center}
+    \scalebox{0.2}{
+      \includegraphics{figure/azimuth_thruster.png}
+    }
+  \end{center}
+  \caption{The design of azimuth thruster}
+  \label{fig:azimuth_design}
+\end{figure}
+
+
 \subsection{MINI-V in the COVID-19}
 MINI-V(minitua vessel) was created in order to test the software easily in the Covid-19. Over the past several years, 
 we couldn't conduct the experiment on the ocean or lake because of the COVID-19.
