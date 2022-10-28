@@ -180,11 +180,11 @@ We used YOLOX\cite{YOLOX} for object Detection of task object information such a
 
 \subsection{Behavior Tree}
 Using behavior tree can build WAM-V behaviors like a tree.  
-We used Groot \ref{fig:Groot}, GUI tools for designing behavior tree for smooth development.
+We use Groot \ref{fig:Groot}, GUI tools for designing behavior tree for smooth development.
 
 \begin{figure}[h]
     \begin{center}
-      \scalebox{0.24}{
+      \scalebox{0.2}{
         \includegraphics{figure/groot.png}
       }
     \end{center}
@@ -208,7 +208,7 @@ These nodes can realize many behavior patterns required in tasks.
 We used  YOLOX\cite{YOLOX} for object Detection of task object information such as buoys and docks.
 We created annotation data based on images and videos obtained from past RobotX Challenges.
 We open our annotation data for speeding up future development for Maritime RobotX. \cite{dataset_annotations}
-The result of training and inference is shown in Fig.
+The result of training and inference is shown in Fig.\ref{fig:inference}.
 
 \begin{figure}[h]
     \begin{center}
@@ -221,6 +221,19 @@ The result of training and inference is shown in Fig.
 \end{figure}
 
 The image is part of a video recorded during our challenging navigation in the 2018 RobotX Challenge.\cite{RobotX2018_video}
+This model is based on the YOLOX-S network and converted into a tensorrt model.
+So, we can run an object detection model of more than 10 Hz in Jetson nano.
+
+\begin{figure}[h]
+    \begin{center}
+      \scalebox{0.2}{
+      \includegraphics{figure/jetson_nano.jpg}
+    }
+  \end{center}
+  \caption{Jetson Nano}
+  \label{fig:jetson_nano}
+\end{figure}
+
 \indent The point cloud from LiDAR preprocesses before fusion the camera image and the LiDAR point cloud.
 First, The point cloud from the LiDAR is filtered to remove outliers.
 Next, the filtered point cloud is downsampled to a 2D Laser Scan.
