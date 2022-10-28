@@ -1,6 +1,6 @@
 build:
-	pdflatex main.tex || true
-	pdflatex main.tex || true
+	pdflatex main.tex
+	pdflatex main.tex
 clean:
 	rm *.pdf
 	rm *.log

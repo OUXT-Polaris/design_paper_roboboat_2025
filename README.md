@@ -6,7 +6,7 @@ OUXT Polaris Design paper for Maritime RObotX 2022.
 ### setup (first time)
 
 ```
-sudo apt install texlive
+sudo apt install texlive texlive-font-utils
 ```
 
 ### build
