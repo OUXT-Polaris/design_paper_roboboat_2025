@@ -165,6 +165,16 @@ We created annotation data based on images and videos obtained from past RobotX 
 The result of training and inference is shown in Fig. hoge. 
 The image is part of a video recorded during our challenging navigation in the 2018 RobotX Challenge.\cite{{RobotX2018_video}}
 
+\subsection{Controller}
+The WAM-V control system adopted the ros2\_control\cite{ros2_control,wamv_control}.
+The ros2\_control is a framework for real-time control of robots using ROS2.
+The WAM-V control is are calculated as follows.
+\begin{equation}
+  M \dot\nu = -D(\nu)\nu + F_H(\nu) + \tau
+  \label{eq:control_1}
+\end{equation}
+
+
 \section{Conclusion}
 In this paper, OUXT-Polaris reported the development of the autonomous navigation system for the 2022 RobotX Challenge.
 Based on the results of the 2018 RobotX Challenge, OUXT-Polaris rebuilt the system and
@@ -183,6 +193,12 @@ We hope these significant upgrades will produce positive results in the next com
 
   \bibitem{RobotX2018_video}
   \url{https://www.youtube.com/watch?v=MqDBxzS4uy4}
+
+  \bibitem{ros2_control}
+  \url{https://github.com/ros-controls/ros2_control}
+
+  \bibitem{wamv_control}
+  \url{https://github.com/OUXT-Polaris/wamv_control}
 
 \end{thebibliography}
 
