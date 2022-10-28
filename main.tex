@@ -222,7 +222,7 @@ Our software contributions are listed as follows.
   \item {\it Software System }:
     We rebuilt the software system from ROS1 to ROS2
   \item {\it Behavior Tree}:
-    We adopted the behavior tree library in ROS2 and built our original behavior tree.
+  We adopted the behavior tree library in ROS2 and built our original behavior tree.  
   \item {\it Camera LiDAR fusion}:
     We are developing a lidar-camera fusion object detection system for this project.
   \item {\it Simulation Tool Development }:
@@ -240,6 +240,42 @@ Our software is highly modularized, so some of our members use our stacks in oth
 All of our software is managed by ansible and can be deployed on real machines without the need for human intervention.
 It is open source, including the setup tools \cite{ouxt_automation} and it's documentation \cite{documentation_software},
 so anyone in the world can try out the OUXT-Polaris navigation stack.
+
+\subsection{Behavior Tree}
+Using behavior tree can build WAM-V behaviors like a tree.  
+we used Groot for smooth development using behavior tree.
+
+\begin{figure}[htbp]
+  \begin{center}
+    \scalebox{0.24}{
+      \includegraphics{figure/groot.png}
+    }
+  \end{center}
+  \caption{Groot example}
+  \label{fig:Groot}
+\end{figure}
+
+For example, in the WAM-V Dynamic Qualifying Task, 
+we defined a node that navigation and searches channel markers.
+In searching channel markers behavior, first, we got the information from the result of lidar-camera fusion object detection system. 
+Information we can get from the system is objects label, probabilities, and bounding boxes.
+And we convert the information we can get from the system into information containing channel markers information 
+we can use in robotx challenge contains such as labels and coordinates in the same coordinate system of WAM-V etc.
+After search channel markers, WAM-V starts navigation.
+We need to act the Node two times in the task. So we defined two same nodes and connected them by Sequence node. 
+The sequence node is defined in the behavior tree.
+We made other Nodes, for example, move forward node, stop node and rotate around the buoy node.
+These nodes can realize many behavior patterns required in tasks.
+
+\begin{figure}[htbp]
+    \begin{center}
+      \scalebox{0.12}{
+        \includegraphics{figure/behavior_tree.png}
+      }
+    \end{center}
+    \caption{Pipeline between perception to behavior}
+    \label{fig:behavior_flow}
+  \end{figure}
 
 \subsection{Planner components}
 We created hermite planner as the path planning module for WAM-V.
@@ -271,17 +307,11 @@ Then, based on the created route and the ship's own self-position, the pure purs
 A contact point between the circle centered on the WAM-V's self-position and the path is created, and the angular velocity and speed up to that contact point is calculated.
 In addition, a straight line is created on the extension of the endpoint to approximate the endpoint so that the endpoint does not run out of control.
 Fig. hoge is shown as an example of route creation by the above path planning module.
-\begin{figure}[h]
-  \begin{center}
-    \scalebox{0.2}{
-      \includegraphics{figure/drone.eps}
-    }
-  \end{center}
-  \caption{the componets of the drone}
-  \label{fig:drone}
-\end{figure}
+
+TODO: planner_example pictire in
+
 \subsection{Camera LiDAR fusion}
-We used YOLOX\cite{YOLOX} for object Detection of task object information such as buoys and docks.
+We used  YOLOX\cite{YOLOX} for object Detection of task object information such as buoys and docks.
 We created annotation data based on images and videos obtained from past RobotX Challenges.
 We open our annotation data for speeding up future development for Maritime RobotX. \cite{dataset_annotations}
 The result of training and inference is shown in Fig. hoge. 
