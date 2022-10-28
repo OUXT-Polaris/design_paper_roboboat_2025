@@ -9,6 +9,7 @@
 \usepackage{url}
 \usepackage{verbatim}
 \usepackage{graphicx}
+\usepackage{here}
 
 \hyphenation{op-tical net-works semi-conduc-tor IEEE-Xplore}
 
@@ -77,10 +78,10 @@ and the target velocity that WAM-V can trace the way is calculated.
 Finally, in the servo and thruster controllers,
 the servo motor direction and the thruster revolution to achieve the target velocity are calculated based on the vessel motion model.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \begin{center}
         \scalebox{0.8}{
-            \includegraphics{figure/proposed_sw_system.jpg}
+            \includegraphics{figure/proposed_sw_system.png}
         }
     \end{center}
     \caption{the proposed software system}
@@ -110,7 +111,7 @@ The collet is pushed axially by a screw into an aluminum hollow shaft with a wed
 The azimuth mechanism is realized by transmitting the rotational force from the servo motor (XM540-W270, Dynamixel) to the hollow shaft by spur gears.
 The hollow shaft is held at two points by angular bearings.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
   \begin{center}
     \scalebox{0.2}{
       \includegraphics{figure/azimuth_thruster.png}
@@ -125,7 +126,7 @@ The hollow shaft is held at two points by angular bearings.
 LiDAR and a visible light camera are used for environmental awareness.
 Their arrangement is shown in the Fig. \ref{fig:sensor_arrangement}.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
   \begin{center}
     \scalebox{0.2}{
       \includegraphics{figure/sensor_arrangement.png}
@@ -149,11 +150,11 @@ Therefore, once the sensors are assembled on the hull, they cannot be easily rem
 To solve this problem, we have developed a sensor unit that consists of a LiDAR and two cameras fixed to a rigid frame and can be mounted on or carried by various robots while maintaining the accuracy of the relative positioning between the sensors.
 We call it a perception array.
 
-The foreground and background views of the designed perception array are shown in Fig. \ref{fig:perception_array_front} and Fig. \ref{fig:perception_array_back}, respectively.
+The foreground and background views of the designed perception array are shown in Fig. \ref{fig:perception_array_front}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
   \begin{center}
-    \scalebox{0.2}{
+    \scalebox{0.1}{
       \includegraphics{figure/perception_array_front.png}
     }
   \end{center}
@@ -161,9 +162,11 @@ The foreground and background views of the designed perception array are shown i
   \label{fig:perception_array_front}
 \end{figure}
 
-\begin{figure}[htbp]
+and Fig. \ref{fig:perception_array_back}, respectively.
+
+\begin{figure}[H]
   \begin{center}
-    \scalebox{0.2}{
+    \scalebox{0.1}{
       \includegraphics{figure/perception_array_back.png}
     }
   \end{center}
@@ -175,7 +178,7 @@ The cameras are mounted on the left and right sides, and the LiDAR is mounted up
 The box in the center contains the power supply function and the switching hub.
 This configuration is shown in the Fig. \ref{fig:perception_aray_diagram}.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
   \begin{center}
     \scalebox{0.2}{
       \includegraphics{figure/perception_aray_diagram.png}
@@ -205,35 +208,15 @@ The concepts of MINI-V are follows:
   \item high compatibility between WAM-V and MINI-V.
 \end{enumerate}
 
-\begin{figure}[htbp]
-  \begin{center}
-    \scalebox{0.2}{
-      \includegraphics{figure/arch_nav.eps}
-    }
-  \end{center}
-  \caption{the archtecture of navigation system}
-  \label{fig:arch_nav}
-\end{figure}
-
-\begin{figure}[htbp]
+\begin{figure}[H]
     \begin{center}
-      \scalebox{0.18}{
-      \includegraphics{figure/mini_v_component.eps}
+    \scalebox{0.22}{
+        \includegraphics{figure/mini_v_component.png}
     }
-  \end{center}
-  \caption{Hardware components of MINI-V}
-  \label{fig:mini_v_component}
-\end{figure}
-
-\begin{figure}[htbp]
-    \begin{center}
-      \scalebox{0.28}{
-        \includegraphics{figure/mini_v_overview.png}
-      }
     \end{center}
-    \caption{Experiment on the Ai river}
-    \label{fig:mini_v_experiment}
-  \end{figure}
+    \caption{Hardware components of MINI-V}
+    \label{fig:mini_v_component}
+\end{figure}
 
 MINI-V is created to be easy to carry, and we can carry them by suitcase like Fig. \ref{fig:mini_v_component}. It is so small that we can
 float and test on the buthtab.
@@ -241,6 +224,16 @@ It is also assembled simply. We develop this vessel on open source. So, other pe
 we expect the high compatibility between WAM-V and MINI-V, and it will make it easy to migrate developed software on MINI-V toWAM-V. However, 
 MINI-V have not had complete compatibility yet.
 We have future tasks to create a little bigger vessel to have compatible hardware and software such as batteries and sensors, and so on.
+  
+\begin{figure}[H]
+    \begin{center}
+    \scalebox{0.25}{
+        \includegraphics{figure/mini_v_overview.png}
+    }
+    \end{center}
+    \caption{Experiment on the Ai river}
+    \label{fig:mini_v_experiment}
+\end{figure}
 
 \subsection{the prototype of the multicopter}
 In the RobotX 2022, the tasks about multicopter are add on the competition. The drone needs to be automated and pick up the task objects.
@@ -255,20 +248,20 @@ Moreover, the sensor such as cameras to recognize the task objects are needed.
 There are many considerations such as the roter-size, motor power, the size of body, and so on.
 We are going to develop the automated navigation system for drone in next years.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
   \begin{center}
-    \scalebox{0.2}{
-      \includegraphics{figure/drone.eps}
+    \scalebox{0.3}{
+      \includegraphics{figure/drone.png}
     }
   \end{center}
   \caption{the componets of the drone}
   \label{fig:drone}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
   \begin{center}
     \scalebox{0.4}{
-      \includegraphics{figure/drone_posi.eps}
+      \includegraphics{figure/drone_posi.png}
     }
   \end{center}
   \caption{the estimated drone position and the track}
@@ -307,11 +300,21 @@ All of our software is managed by ansible and can be deployed on real machines w
 It is open source, including the setup tools \cite{ouxt_automation} and it's documentation \cite{documentation_software},
 so anyone in the world can try out the OUXT-Polaris navigation stack.
 
+\begin{figure}[H]
+    \begin{center}
+        \scalebox{0.4}{
+        \includegraphics{figure/arch_nav.png}
+        }
+    \end{center}
+    \caption{The archtecture of navigation system}
+    \label{fig:arch_nav}
+\end{figure}
+
 \subsection{Behavior Tree}
 Using behavior tree can build WAM-V behaviors like a tree.  
 We use Groot \ref{fig:Groot}, GUI tools for designing behavior tree for smooth development.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
   \begin{center}
     \scalebox{0.24}{
       \includegraphics{figure/groot.png}
@@ -333,7 +336,7 @@ The sequence node is defined in the behavior tree.
 We made other Nodes, for example, move forward node, stop node and rotate around the buoy node.
 These nodes can realize many behavior patterns required in tasks.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \begin{center}
       \scalebox{0.12}{
         \includegraphics{figure/behavior_tree.png}
@@ -373,7 +376,7 @@ Then, based on the created route and the ship's own self-position, the pure purs
 A contact point between the circle centered on the WAM-V's self-position and the path is created, and the angular velocity and speed up to that contact point is calculated.
 In addition, a straight line is created on the extension of the endpoint to approximate the endpoint so that the endpoint does not run out of control.
 Fig.\ref{fig:the part of planning results} is shown as an the part of planning results by the above path planning module.
-\begin{figure}[htbp]
+\begin{figure}[H]
   \begin{center}
     \scalebox{0.5}{
       \includegraphics{figure/example_planner.png}
@@ -389,7 +392,7 @@ We created annotation data based on images and videos obtained from past RobotX 
 We open our annotation data for speeding up future development for Maritime RobotX. \cite{dataset_annotations}
 The result of training and inference is shown in Fig.\ref{fig:inference}.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \begin{center}
       \scalebox{0.13}{
       \includegraphics{figure/inference.png}
@@ -446,7 +449,7 @@ and a microcontroller with an arm CPU and mbed OS.
 The infrastructure supports all of these architectures and 
 can test all software from deep-learning recognition systems to low-layer control systems.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \begin{center}
       \scalebox{0.18}{
       \includegraphics{figure/ci_cd_pipeline.png}
@@ -456,7 +459,7 @@ can test all software from deep-learning recognition systems to low-layer contro
   \label{fig:ci_cd_pipeline}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \begin{center}
       \scalebox{0.18}{
       \includegraphics{figure/dashboard.png}
@@ -486,7 +489,7 @@ In addition, machine learning is a task that requires a variety of complicated l
 However, most tasks are routine and human intervention is not productive.
 To give some concrete examples, the following tasks can be automated.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \begin{center}
       \scalebox{0.1}{
       \includegraphics{figure/tensorboard.png}
@@ -611,7 +614,7 @@ We use the same microcontroller for two main purposes.
 The reason for using the same microcontroller is to make it easier to have a spare in case of failure during the competition.
 We considered several types of microcontrollers and finally adopted NUCLEO-F767ZI (Fig.\ref{fig:f767zi}) from STM Corp.
 
-\begin{table}[htbp]
+\begin{table}[H]
     \caption{board selection}
     \label{table:board_selection}
     \centering
@@ -627,7 +630,7 @@ We considered several types of microcontrollers and finally adopted NUCLEO-F767Z
      \end{tabular}
 \end{table}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \begin{center}
       \scalebox{0.23}{
       \includegraphics{figure/f767zi.png}
