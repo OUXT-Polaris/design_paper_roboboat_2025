@@ -78,7 +78,7 @@ We beliefly describe the developed vessel navigation system as follows.
 \section{Overview of vessel system}
 \begin{figure}[H]
   \begin{center}
-    \scalebox{0.22}{
+    \scalebox{0.2}{
       \includegraphics{figure/arch_nav.eps}
     }
   \end{center}
@@ -88,7 +88,7 @@ We beliefly describe the developed vessel navigation system as follows.
 
 \begin{figure}[H]
   \begin{center}
-      \scalebox{0.9}{
+      \scalebox{0.8}{
           \includegraphics{figure/proposed_sw_system.jpg}
       }
   \end{center}
@@ -498,7 +498,17 @@ Then, the object area is extracted from the 2D LaserScan. \cite{scan_segmentatio
 The extraction algorithm determines the object area information based on whether the distance between 
 the neighboring LaserScan is less than the threshold value determined adaptively.
 The clustered point cloud is projected on the camera images.
-And we will match the bounding IOU and the object label on the images by Hungarian method.\cite{hungarian}
+And we will match the bounding 2D IOU and the object label on the images by Hungarian method.\cite{hungarian}
+
+\begin{figure}[H]
+    \begin{center}
+      \scalebox{0.13}{
+      \includegraphics{figure/scan_segmentation.png}
+    }
+  \end{center}
+  \caption{Algorighum of scan segmentation}
+  \label{fig:scan_segmentation}
+\end{figure}
 
 \subsection{Simulation}
 
