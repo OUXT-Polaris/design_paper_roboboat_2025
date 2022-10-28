@@ -174,7 +174,7 @@ The VLP-16 from Velodyne Lidar is used for the front/rear view to provide a wide
 For the cameras, a module with an IMX-219 image sensor and a lens with a 120-degree diagonal field of view was used.
 This allows the acquisition of point cloud information and visible light images covering 360 degrees around the boat.
 
-\subsection{The Perception Array and the Perception Camera}
+\subsection{The Perception Array}
 
 To perform point cloud fusion using a visible light camera and LiDAR, it is necessary to accurately calibrate the relative positions of the sensors.
 Therefore, once the sensors are assembled on the hull, they cannot be easily removed for testing on land.
@@ -218,6 +218,34 @@ This configuration is shown in the Fig. \ref{fig:perception_aray_diagram}.
   \end{center}
   \caption{Diagram of Perception Array}
   \label{fig:perception_aray_diagram}
+\end{figure}
+
+\subsection{The Perception Camera}
+
+The camera, which is part of the Perception Array, is designed to perform edge-processing image recognition and is equipped with a Jetson Nano from Nvidia as the computing system.
+The camera is designed to be waterproof and heat-dissipating for use in various weather conditions.
+The system diagram is shown in Fig. \ref{fig:perception_camera_diagram}.
+
+\begin{figure}[htbp]
+  \begin{center}
+    \scalebox{0.2}{
+      \includegraphics{figure/perception_camera_diagram.png}
+    }
+  \end{center}
+  \caption{Diagram of the Perception Camera}
+  \label{fig:perception_camera_diagram}
+\end{figure}
+
+The front and rear hatches can be opened and closed without tools. Fig. \ref{fig:camera_disassembly_1} shows these hatches opened.
+
+\begin{figure}[htbp]
+  \begin{center}
+    \scalebox{0.2}{
+      \includegraphics{figure/camera_disassembly_1.png}
+    }
+  \end{center}
+  \caption{Disassembled diagram of the Perception Camera}
+  \label{fig:camera_disassembly_1}
 \end{figure}
 
 
