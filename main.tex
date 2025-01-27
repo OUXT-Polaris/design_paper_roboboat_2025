@@ -124,6 +124,16 @@ This embedded middleware was accepted for an oral session at ROSCONJP 2024, wher
 
 \subsection{ROS 2 Software}
 
+\begin{figure}[H]
+  \begin{center}
+    \scalebox{0.2}{
+      \includegraphics{figure/arch_nav.eps}
+    }
+  \end{center}
+  \caption{Whole Architecture of Navigation System}
+  \label{fig:arch_nav}
+\end{figure}
+
 OUXT Polaris uses ROS 2 as its middleware.
 OUXT Polaris also releases all developed software under the Apache License.
 
@@ -142,6 +152,18 @@ The extended Kalman filter employs a six-degree-of-freedom Kalman filter with qu
 For object recognition, a hybrid approach is used that combines image recognition using Detic and rule-based clustering.
 Detic is a type of Vision and Language model capable of recognizing 20,000 object types.
 OUXT Polaris uses Detic to extract object regions from images and performs sensor fusion with the clustering results of LiDAR point clouds to obtain object information.
+
+\begin{figure}[H]
+  \begin{center}
+    \scalebox{0.2}{
+      \includegraphics{figure/object_detection.jpg}
+    }
+  \end{center}
+  \caption{Object Detection with detic and point painting.}
+  \label{fig:arch_nav}
+\end{figure}
+
+The integration of Lidar and images is achieved by overlaying Detic object recognition results on point cloud data using an algorithm called point painting.
 
 \subsection{Planning}
 
