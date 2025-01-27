@@ -47,6 +47,16 @@ Maritime systems, Robotics, Unmanned surface vehicle
 
 \section{Hardware}
 
+\begin{figure}[H]
+  \begin{center}
+    \scalebox{0.2}{
+      \includegraphics{figure/mini_v_overview.eps}
+    }
+  \end{center}
+  \caption{Mini-V Hardware}
+  \label{fig:miniv}
+\end{figure}
+
 \subsection{concept}
 
 \begin{enumerate}
@@ -83,6 +93,18 @@ Of these, IMU/GNSS is used for self-position estimation using the Kalman filter,
 
 \subsection{circuit}
 
+All circuits are built into the black case of the main unit except for the emergency stop system.
+
+\begin{figure}[H]
+  \begin{center}
+    \scalebox{0.05}{
+      \includegraphics{figure/internal_hardware_mount.jpg}
+    }
+  \end{center}
+  \caption{Internal Hardware Mount}
+  \label{fig:internal_hardware_mount}
+\end{figure}
+
 The batteries installed in the Mini-V are all Makita BL1860B.
 The reason for choosing this model number is that it has enough power to keep Mini-V running for more than one hour, yet it can be carried on board an airplane, making it easy to transport.
 
@@ -92,12 +114,35 @@ Circuit design is done by kicad, and an automation tool called kibot is used to 
 Ordering is also automated, and with the push of a button, components can be purchased at Akizuki Denshi Tsusho, a Japanese electronic components retailer.
 Three circuits were manufactured for the Mini-V.
 
+The hardware is modular, mounted on a 9x12 cm rectangle locked with arrow-shaped components.
+All mounts are constructed with a 3D printer and can be repaired in the event of on-site damage.
+
 \subsubsection{Computer Sensor Board}
+
+\begin{figure}[H]
+  \begin{center}
+    \scalebox{0.05}{
+      \includegraphics{figure/computer_sensor_board.png}
+    }
+  \end{center}
+  \caption{Mini-V EStop Board}
+  \label{fig:miniv_computer_sensor_board}
+\end{figure}
 
 The Computer Sensor Board supplies power to the Jetson AGX Orin computer and other sensors mounted on the Mini-V.
 This board accepts 12V DC as input and is equipped with a MOSFET to prevent reverse connection to prevent damage to the computer and sensors if accidentally connected.
 
-\subsubsection{Mini-V motor Controller Board}
+\subsubsection{Mini-V Motor Controller Board}
+
+\begin{figure}[H]
+  \begin{center}
+    \scalebox{0.05}{
+      \includegraphics{figure/miniv_motor_controller_board.png}
+    }
+  \end{center}
+  \caption{Mini-V EStop Board}
+  \label{fig:miniv_motor_controller_board}
+\end{figure}
 
 The Mini-V motor Controller Board supplies power and signals to the Blue Robotics T200 Basic ESC to control the motor.
 This board has a function to accept an emergency stop signal and receives a 3.3V emergency stop release signal from the emergency stop board.
@@ -106,6 +151,24 @@ This board receives the battery output directly to the board.
 This is because the drive voltage of the Blue Robotics T200 Basic ESC matches the voltage of the Makita BL1860B, so there is no need to use a DC/DC converter to keep the voltage constant.
 
 \subsubsection{Mini-V Estop board}
+
+The Mini-V estop board sends an emergency stop signal to the Mini-V motor Controller Board.
+This board consists of two elements: a teensy 4.1 controller for controlling LED tapes and a stop signal output circuit composed only of circuit elements.
+When the emergency stop button is not pressed, a voltage of 3.3 V is applied to pin 33 in the circuit diagram, and a 3.3 V emergency stop release signal is emitted from J7/J8.
+
+Pin 33 is pulled down so that when the emergency stop button is pressed, the voltage on pin 33 goes to 0V and the voltage of the emergency stop release signal goes to 0V.
+The teensy controller that controls the LED reads the voltage on pin 33 and changes the color of the LED.
+This enables both the emergency stop and its status to be displayed without software intervention.
+
+\begin{figure}[H]
+  \begin{center}
+    \scalebox{0.05}{
+      \includegraphics{figure/miniv_estop_board.png}
+    }
+  \end{center}
+  \caption{Mini-V EStop Board}
+  \label{fig:miniv_estop_board}
+\end{figure}
 
 \section{Software}
 
@@ -121,6 +184,8 @@ This embedded middleware was accepted for an oral session at ROSCONJP 2024, wher
 \url{https://roscon.jp/2024/presentations/06.pdf}
 
 \url{https://vimeo.com/showcase/11452054/video/1029114561}
+
+By using protolink, communication using schema definitions can be easily performed on multiple platforms, including STM32-based microcontrollers and Arduino.
 
 \subsection{ROS 2 Software}
 
@@ -165,6 +230,19 @@ OUXT Polaris uses Detic to extract object regions from images and performs senso
 
 The integration of Lidar and images is achieved by overlaying Detic object recognition results on point cloud data using an algorithm called point painting.
 
+\begin{figure}[H]
+  \begin{center}
+    \scalebox{0.2}{
+      \includegraphics{figure/depth_anything.png}
+    }
+  \end{center}
+  \caption{Run depth anything in Gazebo environment.}
+  \label{fig:arch_nav}
+\end{figure}
+
+In addition, the currently installed VLP16 has insufficient point cloud density, and in some cases, clustering fails depending on the clustering method.
+As a countermeasure, we are considering using Depth Anything to perform depth estimation whose scale is unknown, and then estimating the scale based on the VLP16 point cloud, effectively using the camera as a dense colored LiDAR.
+
 \subsection{Planning}
 
 Path planning is divided into two components: the behavior tree, which determines the goal point, and the module, which determines the route.
@@ -173,6 +251,18 @@ One of the issues currently discovered is the possibility of the vessel running 
 The path planner consists of a smooth path and velocity planning module using Hermite curves.
 The path planner draws a smooth path that does not contact any obstacles until the goal point, and performs velocity planning in the Frenet coordinate system defined on the path.
 The velocity planning module is designed to be scalable in the future, so that two independent ROS nodes can plan the velocity for each constraint condition and then compile them into a velocity plan that satisfies all the constraint conditions.
+
+\begin{figure}[H]
+  \begin{center}
+    \scalebox{0.5}{
+      \includegraphics{figure/example_planner.png}
+    }
+  \end{center}
+  \caption{Path planning with WAM-V}
+  \label{fig:planning}
+\end{figure}
+
+We are usually developing with WAM-V for the Maritime RobotX Challenge. Therefore, we use the WAM-V simulation model for testing, but the exact same algorithm can be used for Mini-V due to the compatibility of the actuators and sensors.
 
 \subsection{Control}
 
