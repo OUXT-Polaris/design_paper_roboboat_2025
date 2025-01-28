@@ -57,6 +57,25 @@ Maritime systems, Robotics, Unmanned surface vehicle
   \label{fig:miniv}
 \end{figure}
 
+\subsection{framework}
+
+Mini-V uses a MISUMI aluminum frame for the framework and is designed for easy mounting of various sensors.
+
+\begin{figure}[H]
+  \begin{center}
+    \scalebox{0.05}{
+      \includegraphics{figure/miniv_framework.png}
+    }
+  \end{center}
+  \caption{Framework of Mini-V}
+  \label{fig:miniv}
+\end{figure}
+
+A LiDAR and camera are mounted in front.
+This mount is manufactured by sheet metal fabrication, but can be easily reproduced by MISUMI's Meivy service.
+
+A Blue Robotics T200 compatible motor is mounted at the rear to provide differential turning motion.
+
 \subsection{concept}
 
 \begin{enumerate}
@@ -75,6 +94,10 @@ Maritime systems, Robotics, Unmanned surface vehicle
 
 OUXT Polaris is competing in the Maritime RobotX Challenge as well as RoboBoat, and its greatest requirement is that Mini-V act as a compatible machine for WAM-V, which requires half a day for assembly alone.
 The Mini-V can be transported by one person and assembled in a few minutes, making it a very inexpensive piece of hardware to experiment with.
+
+The largest component, the Hull, can be folded for extremely compact storage.
+
+The vessel's communication network is also Ethernet-based, and the protocol is unified with WAM-V.
 
 \subsection{sensor}
 
@@ -125,7 +148,7 @@ All mounts are constructed with a 3D printer and can be repaired in the event of
       \includegraphics{figure/computer_sensor_board.png}
     }
   \end{center}
-  \caption{Mini-V EStop Board}
+  \caption{Computer Sensor Board}
   \label{fig:miniv_computer_sensor_board}
 \end{figure}
 
@@ -269,5 +292,10 @@ We are usually developing with WAM-V for the Maritime RobotX Challenge. Therefor
 The control of the hull is implemented with a simple PID control system, considering the hull as a Diff Drive robot.
 The reason why this system was adopted is that there are not enough sensors to model the hull sway and wind, and there is a possibility that a lot of noise could get on the hull.
 We adopted the simplest algorithm because we thought it would be impossible to achieve highly accurate control in any way.
+
+\section{Conclusion}
+
+OUXT Polaris participated in RoboBoat 2025 by utilizing the Mini-V hardware it had previously developed for the Maritime RobotX Challenge.
+In the future, OUXT Polaris would like to make more use of this hardware and conduct various experiments.
 
 \end{document}
